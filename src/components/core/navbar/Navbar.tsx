@@ -80,7 +80,7 @@ export function NavbarNested() {
       <Navbar.Section className={classes.header}>
         <Group position="apart">
           <Logo />
-          <Code sx={{ fontWeight: 700 }}>v3.1.2</Code>
+          <Code sx={{ fontWeight: 700 }}>0.0.1</Code>
         </Group>
       </Navbar.Section>
 

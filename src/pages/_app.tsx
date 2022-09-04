@@ -6,6 +6,7 @@ import { withTRPC } from "@trpc/next";
 import type { AppType } from "next/dist/shared/lib/utils";
 import Head from "next/head";
 import superjson from "superjson";
+import Layout from "../components/core/Layout";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
 
@@ -28,7 +29,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           colorScheme: "light",
         }}
       >
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </MantineProvider>
     </>
   );

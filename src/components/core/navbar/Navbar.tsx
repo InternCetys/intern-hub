@@ -1,14 +1,25 @@
-import { Navbar, Group, Code, ScrollArea, createStyles } from "@mantine/core";
+import {
+  Navbar,
+  Group,
+  Code,
+  ScrollArea,
+  createStyles,
+  ActionIcon,
+  useMantineColorScheme,
+} from "@mantine/core";
 import {
   IconNotes,
   IconCalendarStats,
   IconGauge,
   IconPresentationAnalytics,
   IconTrophy,
+  IconSun,
+  IconMoonStars,
 } from "@tabler/icons";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./LinksGroup";
 import Logo from "../Logo";
+import { useColorScheme } from "@mantine/hooks";
 
 const mockdata = [
   { label: "Dashboard", icon: IconGauge, link: "/app/dashboard" },
@@ -73,6 +84,7 @@ export function NavbarNested() {
     <LinksGroup {...item} key={item.label} />
   ));
 
+  const { toggleColorScheme, colorScheme } = useMantineColorScheme();
   return (
     <Navbar
       height={"100vh"}
@@ -83,7 +95,20 @@ export function NavbarNested() {
       <Navbar.Section className={classes.header}>
         <Group position="apart">
           <Logo />
-          <Code sx={{ fontWeight: 700 }}>0.0.1</Code>
+          <Group>
+            <Code sx={{ fontWeight: 700 }}>0.0.1</Code>
+            <ActionIcon
+              variant="default"
+              onClick={() => toggleColorScheme()}
+              size={30}
+            >
+              {colorScheme === "dark" ? (
+                <IconSun size={16} />
+              ) : (
+                <IconMoonStars size={16} />
+              )}
+            </ActionIcon>
+          </Group>
         </Group>
       </Navbar.Section>
 

@@ -5,8 +5,6 @@ import { trpc } from "../../utils/trpc";
 import Shell from "../../components/core/Shell";
 
 const Home: NextPage = () => {
-  const { data } = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
-
   return (
     <>
       <Head>

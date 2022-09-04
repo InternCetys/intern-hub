@@ -1,82 +1,56 @@
 import {
-  Paper,
-  createStyles,
   TextInput,
   PasswordInput,
   Checkbox,
-  Button,
+  Anchor,
+  Paper,
   Title,
   Text,
-  Anchor,
+  Container,
+  Group,
+  Button,
 } from "@mantine/core";
-import { signIn } from "next-auth/react";
-
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    minHeight: 900,
-    backgroundSize: "cover",
-    backgroundImage:
-      "url(https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80)",
-  },
-
-  form: {
-    borderRight: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
-    }`,
-    minHeight: 900,
-    maxWidth: 450,
-    paddingTop: 80,
-
-    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
-      maxWidth: "100%",
-    },
-  },
-
-  title: {
-    color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-  },
-
-  logo: {
-    color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    width: 120,
-    display: "block",
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-}));
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { GoogleIcon } from "./GoogleButton";
 
 export default function LoginRoot() {
-  const { classes } = useStyles();
-  return (
-    <div className={classes.wrapper}>
-      <Paper className={classes.form} radius={0} p={30}>
-        <Title
-          order={2}
-          className={classes.title}
-          align="center"
-          mt="md"
-          mb={50}
-        >
-          Welcome to CETYS Intern!
-        </Title>
-        <Button onClick={() => signIn()}>Sign In</Button>
+  const { data: session } = useSession();
+  const router = useRouter();
 
-        <TextInput
-          label="Username or Email address"
-          placeholder="hello@gmail.com"
-          size="md"
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          mt="md"
-          size="md"
-        />
-        <Button fullWidth mt="xl" size="md">
-          Login
+  useEffect(() => {
+    if (session) {
+      router.push("/app/dashboard");
+    }
+  }, [session]);
+
+  return (
+    <Container size={520} my={40}>
+      <Title
+        align="center"
+        sx={(theme) => ({
+          fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+          fontWeight: 900,
+        })}
+      >
+        ¡Bienvenido a Intern Hub!
+      </Title>
+      <Text color="dimmed" size="sm" align="center" mt={5}>
+        Asegúrate de entrar con tu correo @cetys.edu.mx
+      </Text>
+
+      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <Button
+          fullWidth
+          leftIcon={<GoogleIcon />}
+          color={"gray"}
+          variant="outline"
+          onClick={() => signIn("google")}
+        >
+          Iniciar Sesión
         </Button>
       </Paper>
-    </div>
+    </Container>
   );
 }

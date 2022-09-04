@@ -20,6 +20,7 @@ import { UserButton } from "./UserButton";
 import { LinksGroup } from "./LinksGroup";
 import Logo from "../Logo";
 import { useColorScheme } from "@mantine/hooks";
+import { useAuth } from "../../../hooks/useAuth";
 
 const mockdata = [
   { label: "Dashboard", icon: IconGauge, link: "/app/dashboard" },
@@ -85,6 +86,8 @@ export function NavbarNested() {
   ));
 
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
+  const { session } = useAuth();
+
   return (
     <Navbar
       height={"100vh"}
@@ -118,9 +121,9 @@ export function NavbarNested() {
 
       <Navbar.Section className={classes.footer}>
         <UserButton
-          image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
-          name="Ann Nullpointer"
-          email="anullpointer@yahoo.com"
+          image={session?.user?.image || "Loading..."}
+          name={session?.user?.name || "Loading..."}
+          email={session?.user?.email || "Loading..."}
         />
       </Navbar.Section>
     </Navbar>

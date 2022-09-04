@@ -17,13 +17,7 @@ const Shell = ({ children }: Props) => {
     },
   });
 
-  return (
-    <AppShell navbar={<NavbarNested />}>
-      <LoadingOverlay visible={isLoading} overlayBlur={7}>
-        {children}
-      </LoadingOverlay>
-    </AppShell>
-  );
+  return <AppShell navbar={<NavbarNested />}>{children}</AppShell>;
 };
 
 export default Shell;

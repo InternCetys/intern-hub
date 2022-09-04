@@ -6,6 +6,7 @@ import {
   createStyles,
   ActionIcon,
   useMantineColorScheme,
+  Menu,
 } from "@mantine/core";
 import {
   IconNotes,
@@ -15,12 +16,16 @@ import {
   IconTrophy,
   IconSun,
   IconMoonStars,
+  IconLogout,
+  IconUser,
 } from "@tabler/icons";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./LinksGroup";
 import Logo from "../Logo";
 import { useColorScheme } from "@mantine/hooks";
 import { useAuth } from "../../../hooks/useAuth";
+import { useState } from "react";
+import { signOut } from "next-auth/react";
 
 const mockdata = [
   { label: "Dashboard", icon: IconGauge, link: "/app/dashboard" },
@@ -119,13 +124,35 @@ export function NavbarNested() {
         <div className={classes.linksInner}>{links}</div>
       </Navbar.Section>
 
-      <Navbar.Section className={classes.footer}>
-        <UserButton
-          image={session?.user?.image || "Loading..."}
-          name={session?.user?.name || "Loading..."}
-          email={session?.user?.email || "Loading..."}
-        />
-      </Navbar.Section>
+      <Menu
+        trigger="hover"
+        openDelay={100}
+        closeDelay={100}
+        width={200}
+        position={"right-end"}
+        withArrow
+      >
+        <Menu.Target>
+          <Navbar.Section className={classes.footer}>
+            <UserButton
+              image={session?.user?.image || "Loading..."}
+              name={session?.user?.name || "Loading..."}
+              email={session?.user?.email || "Loading..."}
+            />
+          </Navbar.Section>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Label>Configuracion</Menu.Label>
+          <Menu.Item icon={<IconUser />}>Perfil</Menu.Item>
+          <Menu.Item
+            icon={<IconLogout />}
+            color={"red"}
+            onClick={() => signOut({ redirect: true, callbackUrl: "/login" })}
+          >
+            Cerrar Sesion
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
     </Navbar>
   );
 }

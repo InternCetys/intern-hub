@@ -88,10 +88,8 @@ export function LinksGroup({
   const router = useRouter();
 
   const items = (hasLinks ? links : []).map((link) => (
-    <Link href={link.link}>
-      <Text className={classes.link} key={link.label}>
-        {link.label}
-      </Text>
+    <Link href={link.link} key={link.label}>
+      <Text className={classes.link}>{link.label}</Text>
     </Link>
   ));
 

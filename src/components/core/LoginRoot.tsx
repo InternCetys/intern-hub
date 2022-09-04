@@ -9,6 +9,7 @@ import {
   Text,
   Anchor,
 } from "@mantine/core";
+import { signIn } from "next-auth/react";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -59,6 +60,7 @@ export default function LoginRoot() {
         >
           Welcome to CETYS Intern!
         </Title>
+        <Button onClick={() => signIn()}>Sign In</Button>
 
         <TextInput
           label="Username or Email address"

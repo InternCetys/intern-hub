@@ -1,6 +1,8 @@
 // src/server/router/context.ts
 import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
+import { getSession } from "next-auth/react";
+import { openStdin } from "process";
 import { prisma } from "../db/client";
 
 /**
@@ -23,9 +25,11 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * @link https://trpc.io/docs/context
  **/
 export const createContext = async (
-  opts: trpcNext.CreateNextContextOptions,
+  opts: trpcNext.CreateNextContextOptions
 ) => {
-  return await createContextInner({});
+  const { req } = opts;
+  const session = await getSession({ req });
+  return { session, ...(await createContextInner({})) };
 };
 
 type Context = trpc.inferAsyncReturnType<typeof createContext>;

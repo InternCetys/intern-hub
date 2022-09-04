@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Shell from "../../components/core/Shell";
 import ProjectRoot from "../../components/project/ProjectRoot";

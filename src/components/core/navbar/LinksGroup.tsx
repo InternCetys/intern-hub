@@ -14,6 +14,8 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from "@tabler/icons";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -67,6 +69,7 @@ interface LinksGroupProps {
   icon: TablerIcon;
   label: string;
   initiallyOpened?: boolean;
+  link?: string;
   links?: { label: string; link: string }[];
 }
 
@@ -74,28 +77,30 @@ export function LinksGroup({
   icon: Icon,
   label,
   initiallyOpened,
+  link,
   links,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
+
+  const router = useRouter();
+
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<"a">
-      component="a"
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </Text>
+    <Link href={link.link}>
+      <Text className={classes.link} key={link.label}>
+        {link.label}
+      </Text>
+    </Link>
   ));
 
   return (
     <>
       <UnstyledButton
-        onClick={() => setOpened((o) => !o)}
+        onClick={() =>
+          items.length > 0 ? setOpened((o) => !o) : router.push(link || "")
+        }
         className={classes.control}
       >
         <Group position="apart" spacing={0}>
@@ -121,30 +126,5 @@ export function LinksGroup({
       </UnstyledButton>
       {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
-  );
-}
-
-const mockdata = {
-  label: "Releases",
-  icon: IconCalendarStats,
-  links: [
-    { label: "Upcoming releases", link: "/" },
-    { label: "Previous releases", link: "/" },
-    { label: "Releases schedule", link: "/" },
-  ],
-};
-
-export function NavbarLinksGroup() {
-  return (
-    <Box
-      sx={(theme) => ({
-        minHeight: 220,
-        padding: theme.spacing.md,
-        backgroundColor:
-          theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-      })}
-    >
-      <LinksGroup {...mockdata} />
-    </Box>
   );
 }

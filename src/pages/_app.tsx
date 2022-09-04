@@ -9,8 +9,18 @@ import superjson from "superjson";
 import Layout from "../components/core/Layout";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
+import Router, { useRouter } from "next/router";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+
+// Show loading bar on page change
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 const MyApp: AppType = ({ Component, pageProps }) => {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -29,9 +39,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           colorScheme: "light",
         }}
       >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Component {...pageProps} />
       </MantineProvider>
     </>
   );

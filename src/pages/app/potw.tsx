@@ -10,6 +10,7 @@ const potw = () => {
         <meta name="description" content="CETYS Intern Hub" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <NavbarNested />
     </>
   );
 };

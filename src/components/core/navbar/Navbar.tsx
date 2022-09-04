@@ -4,9 +4,6 @@ import {
   IconCalendarStats,
   IconGauge,
   IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
   IconTrophy,
 } from "@tabler/icons";
 import { UserButton } from "./UserButton";
@@ -14,17 +11,23 @@ import { LinksGroup } from "./LinksGroup";
 import Logo from "../Logo";
 
 const mockdata = [
-  { label: "Dashboard", icon: IconGauge },
+  { label: "Dashboard", icon: IconGauge, link: "/app/dashboard" },
   {
     label: "Problems of the Week",
     icon: IconNotes,
+    link: "/app/potw",
   },
   {
     label: "Upcoming Events",
     icon: IconCalendarStats,
+    link: "/app/events",
   },
-  { label: "Project Gallery", icon: IconPresentationAnalytics },
-  { label: "Leetcode Contest", icon: IconTrophy },
+  {
+    label: "Project Gallery",
+    icon: IconPresentationAnalytics,
+    link: "/app/projects",
+  },
+  { label: "Leetcode Contest", icon: IconTrophy, link: "/app/contest" },
 ];
 
 const useStyles = createStyles((theme) => ({

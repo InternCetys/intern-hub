@@ -495,6 +495,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@tabler/icons@^1.92.0":
+  version "1.92.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.92.0.tgz#e068938db61d5f932d317a8fd18acd5c0204496e"
+  integrity sha512-eZP5jYvNPtZKiWj1Bn2C+zjvGXhQoormXAyE3TH7ihCxXBHMzKF/ZLYhU3rnMC/+NjuLDBifKc6dmwoh7s62vQ==
+
 "@trpc/client@^9.27.2":
   version "9.27.2"
   resolved "https://registry.yarnpkg.com/@trpc/client/-/client-9.27.2.tgz#1b4ae3c12c5666e81322fddd787d48b0901b75a1"

@@ -1,8 +1,15 @@
-import { Title } from "@mantine/core";
+import { Paper, Timeline, Title } from "@mantine/core";
 import React from "react";
 
 const EventsRoot = () => {
-  return <Title>Upcoming Events</Title>;
+  return(
+    <div>
+      <Title>Upcoming Events</Title>
+      <Paper shadow = "lg" p="md">
+        <Title>Que rollo </Title>
+      </Paper>
+    </div>
+  );
 };
 
 export default EventsRoot;

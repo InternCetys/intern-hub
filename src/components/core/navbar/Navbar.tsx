@@ -18,6 +18,7 @@ import {
   IconMoonStars,
   IconLogout,
   IconUser,
+  IconLock,
 } from "@tabler/icons";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./LinksGroup";
@@ -45,6 +46,14 @@ const mockdata = [
     link: "/app/projects",
   },
   { label: "Leetcode Contest", icon: IconTrophy, link: "/app/contest" },
+  {
+    label: "Admin",
+    icon: IconLock,
+    links: [
+      { label: "Active Users", link: "/app/admin/attendance" },
+      { label: "Stats", link: "/app/admin/stats" },
+    ],
+  },
 ];
 
 const useStyles = createStyles((theme) => ({

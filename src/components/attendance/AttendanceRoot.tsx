@@ -36,15 +36,15 @@ const AttendanceRoot = () => {
             </>
           )}
           {attendance &&
-            attendance.users.map((userAttendence) => (
-              <Grid.Col span={4}>
+            attendance.users.map((userAttendance) => (
+              <Grid.Col span={4} key={userAttendance.userId}>
                 <Paper shadow={"md"} p={10}>
                   <Group>
-                    <Avatar src={userAttendence.user.image} />
+                    <Avatar src={userAttendance.user.image} />
                     <div>
-                      <Text size={15}>{userAttendence.user.name}</Text>
+                      <Text size={15}>{userAttendance.user.name}</Text>
                       <Text size={12} style={{ opacity: 0.5 }}>
-                        {userAttendence.user.email}
+                        {userAttendance.user.email}
                       </Text>
                     </div>
                   </Group>

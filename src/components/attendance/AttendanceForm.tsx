@@ -97,4 +97,6 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
   )
 );
 
+SelectItem.displayName = "SelectItem";
+
 export default AttendanceForm;

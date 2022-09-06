@@ -55,3 +55,9 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Badges {
+  name  String   @unique 
+  imageURL String @unique
+
+}

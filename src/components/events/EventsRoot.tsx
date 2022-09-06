@@ -1,14 +1,25 @@
-import { Paper, Timeline, Title } from "@mantine/core";
+import {
+  Group,
+  Paper,
+  Timeline,
+  Title,
+  Text,
+  Stack,
+  Button,
+  Image,
+  Center,
+} from "@mantine/core";
 import React from "react";
+import NextEvent from "./NextEvent";
 
 const EventsRoot = () => {
-  return(
-    <div>
+  return (
+    <Stack spacing="xl">
       <Title>Upcoming Events</Title>
-      <Paper shadow = "lg" p="md">
-        <Title>Que rollo </Title>
-      </Paper>
-    </div>
+      <Center mt="20px">
+        <NextEvent />
+      </Center>
+    </Stack>
   );
 };
 

@@ -214,9 +214,13 @@ interface InternSessionDialogProps {
   date: Date;
 }
 const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
-  const [title, setTitle] = useState("");
-
   const utils = trpc.useContext();
+
+  const form = useForm({
+    initialValues: {
+      title: "",
+    },
+  });
 
   const addDayAsInternSession = trpc.useMutation(
     "attendance.addDayAsInternSession",
@@ -231,7 +235,7 @@ const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
   );
 
   useEffect(() => {
-    setTitle("");
+    form.reset();
   }, [date]);
 
   return (
@@ -241,19 +245,23 @@ const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
       </Text>
 
       <Group align="flex-end">
-        <TextInput
-          placeholder="Title"
-          style={{ flex: 1 }}
-          onChange={(e) => setTitle(e.currentTarget.value)}
-          value={title}
-        />
-        <Button
-          onClick={() =>
-            addDayAsInternSession.mutate({ date: date.toISOString(), title })
-          }
+        <form
+          onSubmit={form.onSubmit((values) =>
+            addDayAsInternSession.mutate({
+              date: date.toISOString(),
+              title: values.title,
+            })
+          )}
         >
-          Submit
-        </Button>
+          <TextInput
+            placeholder="Title"
+            style={{ flex: 1 }}
+            {...form.getInputProps("title")}
+          />
+          <Button type="submit" loading={addDayAsInternSession.isLoading}>
+            Submit
+          </Button>
+        </form>
       </Group>
     </Dialog>
   );

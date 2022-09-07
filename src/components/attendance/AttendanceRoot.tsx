@@ -244,15 +244,15 @@ const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
         Add this day as an Intern Session?
       </Text>
 
-      <Group align="flex-end">
-        <form
-          onSubmit={form.onSubmit((values) =>
-            addDayAsInternSession.mutate({
-              date: date.toISOString(),
-              title: values.title,
-            })
-          )}
-        >
+      <form
+        onSubmit={form.onSubmit((values) =>
+          addDayAsInternSession.mutate({
+            date: date.toISOString(),
+            title: values.title,
+          })
+        )}
+      >
+        <Group align="flex-end">
           <TextInput
             placeholder="Title"
             style={{ flex: 1 }}
@@ -261,8 +261,8 @@ const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
           <Button type="submit" loading={addDayAsInternSession.isLoading}>
             Submit
           </Button>
-        </form>
-      </Group>
+        </Group>
+      </form>
     </Dialog>
   );
 };

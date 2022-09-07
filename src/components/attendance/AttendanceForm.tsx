@@ -26,12 +26,14 @@ interface Props {
   setSelectedMembers: (members: string[]) => void;
   isEditing: boolean;
   cancelEdit: () => void;
+  selectedDate: Date;
 }
 const AttendanceForm = ({
   selectedMembers,
   setSelectedMembers,
   isEditing,
   cancelEdit,
+  selectedDate
 }: Props) => {
   const { isLoading, data: users } = trpc.useQuery([
     "user.getAllUsersForSelectInput",
@@ -65,14 +67,14 @@ const AttendanceForm = ({
   const handleAttendanceSubmit = () => {
     if (isEditing) {
       updateAttendance.mutate({
-        day: startOfToday().toISOString(),
+        day: selectedDate.toISOString(),
         users: selectedMembers,
       });
       return;
     }
 
     createAttendance.mutate({
-      day: startOfToday().toISOString(),
+      day: selectedDate.toISOString(),
       users: selectedMembers,
     });
 

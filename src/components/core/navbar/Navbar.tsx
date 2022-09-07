@@ -28,7 +28,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 
-const mockdata = [
+const userLinks = [
   { label: "Dashboard", icon: IconGauge, link: "/app/dashboard" },
   {
     label: "Problems of the Week",
@@ -46,6 +46,9 @@ const mockdata = [
     link: "/app/projects",
   },
   { label: "Leetcode Contest", icon: IconTrophy, link: "/app/contest" },
+];
+
+const adminLinks = [
   {
     label: "Admin",
     icon: IconLock,
@@ -93,9 +96,16 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function NavbarNested() {
+interface Props {
+  isAdmin: boolean;
+}
+
+export function NavbarNested({ isAdmin }: Props) {
   const { classes } = useStyles();
-  const links = mockdata.map((item) => (
+
+  const mergedLinks = [...userLinks, ...(isAdmin ? adminLinks : [])];
+
+  const links = mergedLinks.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
 
@@ -144,6 +154,7 @@ export function NavbarNested() {
         <Menu.Target>
           <Navbar.Section className={classes.footer}>
             <UserButton
+              admin={isAdmin}
               image={session?.user?.image || "Loading..."}
               name={session?.user?.name || "Loading..."}
               email={session?.user?.email || "Loading..."}

@@ -111,6 +111,7 @@ const AttendanceRoot = () => {
         setSelectedMembers={setSelectedMembers}
         isEditing={isEditing}
         cancelEdit={cancelEdit}
+        selectedDate={selectedDate}
       />
       <Stack mt={20}>
         <Group position={"apart"}>

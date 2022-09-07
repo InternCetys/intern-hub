@@ -47,6 +47,7 @@ model User {
   sessions       Session[]
   isInternMember Boolean?  @default(false)
   attendance    AttendanceOnUsers[]
+  admin Boolean @default(false)
 }
 
 model VerificationToken {

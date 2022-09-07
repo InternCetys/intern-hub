@@ -32,7 +32,7 @@ import {
   IconHomeCancel,
 } from "@tabler/icons";
 import { addDays, format, isSameDay, isToday, startOfToday } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc";
 import AttendanceForm from "./AttendanceForm";
 import People from "../../assets/people.svg";
@@ -213,7 +213,10 @@ interface InternSessionDialogProps {
   date: Date;
 }
 const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
+  const [title, setTitle] = useState("");
+
   const utils = trpc.useContext();
+
   const addDayAsInternSession = trpc.useMutation(
     "attendance.addDayAsInternSession",
     {
@@ -225,7 +228,10 @@ const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
       },
     }
   );
-  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    setTitle("");
+  }, [date]);
 
   return (
     <Dialog opened={isOpen} withCloseButton size="lg" radius="md">

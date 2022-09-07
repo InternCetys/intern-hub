@@ -11,6 +11,14 @@ import {
   Popover,
   useMantineTheme,
   CloseButton,
+  Loader,
+  Center,
+  AspectRatio,
+  Button,
+  Dialog,
+  TextInput,
+  Badge,
+  Tooltip,
 } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import {
@@ -27,8 +35,17 @@ import { addDays, format, isSameDay, isToday, startOfToday } from "date-fns";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 import AttendanceForm from "./AttendanceForm";
+import People from "../../assets/people.svg";
+import Image from "next/image";
+import { inferProcedureOutput } from "@trpc/server";
+import { AppRouter } from "../../server/router";
+import { useForm } from "@mantine/form";
 
 const TODAY = startOfToday();
+
+type Attendance = inferProcedureOutput<
+  AppRouter["_def"]["queries"]["attendance.getAttendanceByDate"]
+>;
 
 const AttendanceRoot = () => {
   const theme = useMantineTheme();
@@ -44,6 +61,9 @@ const AttendanceRoot = () => {
     selectedDate.toISOString(),
   ]);
 
+  const { isLoading: isLoadingInternSession, data: internSession } =
+    trpc.useQuery(["attendance.isInternSession", selectedDate.toISOString()]);
+
   const handleCalendarDateChange = (date: Date) => {
     setSelectedDate(date);
     setCalendarOpen(false);
@@ -53,6 +73,17 @@ const AttendanceRoot = () => {
   const handleAddDaysToSelectedDate = (days: number) => {
     setSelectedDate(addDays(selectedDate, days));
     cancelEdit();
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+    const usersIds = attendance?.users.map((user) => user.userId) || [];
+    setSelectedMembers(usersIds);
+  };
+
+  const cancelEdit = () => {
+    setIsEditing(false);
+    setSelectedMembers([]);
   };
 
   const renderDayStyle = (date: Date) => {
@@ -72,17 +103,6 @@ const AttendanceRoot = () => {
     return {};
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-    const usersIds = attendance?.users.map((user) => user.userId) || [];
-    setSelectedMembers(usersIds);
-  };
-
-  const cancelEdit = () => {
-    setIsEditing(false);
-    setSelectedMembers([]);
-  };
-
   return (
     <>
       <Title>Active Users</Title>
@@ -96,6 +116,12 @@ const AttendanceRoot = () => {
         <Group position={"apart"}>
           <Group>
             <Title order={2}>{format(selectedDate, "PPPP")}</Title>
+            {internSession && (
+              <Tooltip label={internSession.title}>
+                <Badge color="green">Intern Session</Badge>
+              </Tooltip>
+            )}
+
             {attendance && (
               <ActionIcon onClick={() => handleEdit()}>
                 <IconEdit size={30} />
@@ -130,34 +156,99 @@ const AttendanceRoot = () => {
             </ActionIcon>
           </Group>
         </Group>
-        <Grid>
-          {isLoading && (
-            <>
-              <Skeleton height={20} />
-              <Skeleton mt={6} height={20} />
-              <Skeleton mt={6} height={20} />
-            </>
-          )}
-          {attendance &&
-            attendance.users.map((userAttendance) => (
-              <Grid.Col span={4} key={userAttendance.userId}>
-                <Paper shadow={"md"} p={10}>
-                  <Group>
-                    <Avatar src={userAttendance.user.image} />
-                    <div>
-                      <Text size={15}>{userAttendance.user.name}</Text>
-                      <Text size={12} style={{ opacity: 0.5 }}>
-                        {userAttendance.user.email}
-                      </Text>
-                    </div>
-                  </Group>
-                </Paper>
-              </Grid.Col>
-            ))}
-        </Grid>
+        <Grid>{renderAttendantList(isLoading, attendance)}</Grid>
+        <InternSessionDialog isOpen={!internSession} date={selectedDate} />
       </Stack>
     </>
   );
 };
 
+const renderAttendantList = (
+  isLoading: boolean,
+  userAttendance: Attendance | undefined
+) => {
+  if (isLoading) {
+    return (
+      <Center style={{ width: "100%" }}>
+        <Loader />
+      </Center>
+    );
+  }
+
+  if (!isLoading && !userAttendance?.users) {
+    return (
+      <Center style={{ width: "100%" }}>
+        <Stack>
+          <Image src={People} width="400px" height="400px" />
+          <Center>
+            <Text>No attendance found for this day</Text>
+          </Center>
+        </Stack>
+      </Center>
+    );
+  }
+
+  return (
+    userAttendance &&
+    userAttendance.users.map((attendant) => (
+      <Grid.Col span={4} key={attendant.userId}>
+        <Paper shadow={"md"} p={10}>
+          <Group>
+            <Avatar src={attendant.user.image} />
+            <div>
+              <Text size={15}>{attendant.user.name}</Text>
+              <Text size={12} style={{ opacity: 0.5 }}>
+                {attendant.user.email}
+              </Text>
+            </div>
+          </Group>
+        </Paper>
+      </Grid.Col>
+    ))
+  );
+};
+
+interface InternSessionDialogProps {
+  isOpen: boolean;
+  date: Date;
+}
+const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
+  const utils = trpc.useContext();
+  const addDayAsInternSession = trpc.useMutation(
+    "attendance.addDayAsInternSession",
+    {
+      onSuccess: () => {
+        utils.invalidateQueries([
+          "attendance.isInternSession",
+          date.toISOString(),
+        ]);
+      },
+    }
+  );
+  const [title, setTitle] = useState("");
+
+  return (
+    <Dialog opened={isOpen} withCloseButton size="lg" radius="md">
+      <Text size="sm" style={{ marginBottom: 10 }} weight={500}>
+        Add this day as an Intern Session?
+      </Text>
+
+      <Group align="flex-end">
+        <TextInput
+          placeholder="Title"
+          style={{ flex: 1 }}
+          onChange={(e) => setTitle(e.currentTarget.value)}
+          value={title}
+        />
+        <Button
+          onClick={() =>
+            addDayAsInternSession.mutate({ date: date.toISOString(), title })
+          }
+        >
+          Submit
+        </Button>
+      </Group>
+    </Dialog>
+  );
+};
 export default AttendanceRoot;

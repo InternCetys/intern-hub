@@ -71,3 +71,9 @@ model AttendanceOnUsers {
 
   @@id([userId, attendanceId])
 }
+
+model InternSession {
+  id String @id @default(cuid())
+  title String
+  date DateTime @default(now()) @db.Date @unique
+}

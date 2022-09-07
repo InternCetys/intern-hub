@@ -8,6 +8,10 @@ import {
   Group,
   Text,
 } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons";
+import { startOfToday } from "date-fns";
+import { traceDeprecation } from "process";
 import React, { Dispatch, forwardRef, SetStateAction, useState } from "react";
 import { trpc } from "../../utils/trpc";
 
@@ -17,20 +21,62 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   description: string;
 }
 
-const AttendanceForm = () => {
+interface Props {
+  selectedMembers: string[];
+  setSelectedMembers: (members: string[]) => void;
+  isEditing: boolean;
+  cancelEdit: () => void;
+}
+const AttendanceForm = ({
+  selectedMembers,
+  setSelectedMembers,
+  isEditing,
+  cancelEdit,
+}: Props) => {
   const { isLoading, data: users } = trpc.useQuery([
     "user.getAllUsersForSelectInput",
   ]);
 
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const utils = trpc.useContext();
 
-  const createAttendance = trpc.useMutation(["attendance.createAttendance"]);
+  const createAttendance = trpc.useMutation(["attendance.createAttendance"], {
+    onSuccess: () => {
+      utils.invalidateQueries(["attendance.getAttendanceByDate"]);
+      showNotification({
+        message: "Attendance created successfully",
+        icon: <IconCheck />,
+        color: "green",
+      });
+    },
+  });
+
+  const updateAttendance = trpc.useMutation(["attendance.updateAttendance"], {
+    onSuccess: () => {
+      utils.invalidateQueries(["attendance.getAttendanceByDate"]);
+      cancelEdit();
+      showNotification({
+        message: "Attendance updated successfully",
+        icon: <IconCheck />,
+        color: "green",
+      });
+    },
+  });
 
   const handleAttendanceSubmit = () => {
+    if (isEditing) {
+      updateAttendance.mutate({
+        day: startOfToday().toISOString(),
+        users: selectedMembers,
+      });
+      return;
+    }
+
     createAttendance.mutate({
-      day: new Date().toISOString(),
+      day: startOfToday().toISOString(),
       users: selectedMembers,
     });
+
+    setSelectedMembers([]);
   };
 
   return (
@@ -64,6 +110,7 @@ const AttendanceForm = () => {
                     .includes(value.toLowerCase().trim()))
               }
               autoComplete="off"
+              value={selectedMembers}
               onChange={setSelectedMembers}
             />
             <Button
@@ -71,7 +118,7 @@ const AttendanceForm = () => {
               onClick={handleAttendanceSubmit}
               loading={createAttendance.isLoading}
             >
-              Submit
+              {isEditing ? "Update Attendance" : "Submit Attendance"}
             </Button>
           </Stack>
         )}

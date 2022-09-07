@@ -24,6 +24,35 @@ export const attendanceRouter = createRouter()
       });
     },
   })
+  .mutation("updateAttendance", {
+    input: z.object({
+      users: z.array(z.string()),
+      day: z.string(),
+    }),
+    resolve: async (req) => {
+      const attendance = await req.ctx.prisma.attendance.findUnique({
+        where: { date: req.input.day },
+        select: { id: true },
+      });
+
+      if (!attendance) {
+        throw new Error("Attendance not found");
+      }
+
+      await req.ctx.prisma.attendanceOnUsers.deleteMany({
+        where: { attendance: { date: req.input.day } },
+      });
+
+      return req.ctx.prisma.attendanceOnUsers.createMany({
+        data: req.input.users.map((user) => {
+          return {
+            attendanceId: attendance.id,
+            userId: user,
+          };
+        }),
+      });
+    },
+  })
   .query("getAttendanceByDate", {
     input: z.string(),
     resolve: async (req) => {
@@ -32,7 +61,9 @@ export const attendanceRouter = createRouter()
         include: {
           users: {
             include: {
-              user: { select: { name: true, email: true, image: true } },
+              user: {
+                select: { name: true, email: true, image: true },
+              },
             },
           },
         },

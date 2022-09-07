@@ -7,26 +7,129 @@ import {
   Avatar,
   Group,
   Skeleton,
+  ActionIcon,
+  Popover,
+  useMantineTheme,
+  CloseButton,
 } from "@mantine/core";
-import { format } from "date-fns";
+import { Calendar } from "@mantine/dates";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconArrowsCross,
+  IconCalendar,
+  IconCross,
+  IconCrossOff,
+  IconEdit,
+  IconHomeCancel,
+} from "@tabler/icons";
+import { addDays, format, isSameDay, isToday, startOfToday } from "date-fns";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 import AttendanceForm from "./AttendanceForm";
 
-const TODAY = new Date().toISOString();
+const TODAY = startOfToday();
 
 const AttendanceRoot = () => {
+  const theme = useMantineTheme();
+
+  const [selectedDate, setSelectedDate] = useState(TODAY);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+
   const { isLoading, data: attendance } = trpc.useQuery([
     "attendance.getAttendanceByDate",
-    TODAY, // may lead to bugs
+    selectedDate.toISOString(),
   ]);
+
+  const handleCalendarDateChange = (date: Date) => {
+    setSelectedDate(date);
+    setCalendarOpen(false);
+    cancelEdit();
+  };
+
+  const handleAddDaysToSelectedDate = (days: number) => {
+    setSelectedDate(addDays(selectedDate, days));
+    cancelEdit();
+  };
+
+  const renderDayStyle = (date: Date) => {
+    if (isToday(date)) {
+      return {
+        backgroundColor: theme.colors.blue[7],
+        color: theme.white,
+      };
+    }
+
+    if (isSameDay(date, selectedDate)) {
+      return {
+        backgroundColor: theme.colors.gray[1],
+      };
+    }
+
+    return {};
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+    const usersIds = attendance?.users.map((user) => user.userId) || [];
+    setSelectedMembers(usersIds);
+  };
+
+  const cancelEdit = () => {
+    setIsEditing(false);
+    setSelectedMembers([]);
+  };
 
   return (
     <>
       <Title>Active Users</Title>
-      <AttendanceForm />
+      <AttendanceForm
+        selectedMembers={selectedMembers}
+        setSelectedMembers={setSelectedMembers}
+        isEditing={isEditing}
+        cancelEdit={cancelEdit}
+      />
       <Stack mt={20}>
-        <Title order={2}>{format(new Date(), "PPPP")}</Title>
+        <Group position={"apart"}>
+          <Group>
+            <Title order={2}>{format(selectedDate, "PPPP")}</Title>
+            {attendance && (
+              <ActionIcon onClick={() => handleEdit()}>
+                <IconEdit size={30} />
+              </ActionIcon>
+            )}
+            {isEditing && (
+              <CloseButton size={30} onClick={() => cancelEdit()} />
+            )}
+          </Group>
+          <Group>
+            <ActionIcon>
+              <IconArrowLeft
+                size={30}
+                onClick={() => handleAddDaysToSelectedDate(-1)}
+              />
+            </ActionIcon>
+            <Popover opened={calendarOpen} onChange={setCalendarOpen}>
+              <Popover.Target>
+                <ActionIcon onClick={() => setCalendarOpen((o) => !o)}>
+                  <IconCalendar size={30} />
+                </ActionIcon>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <Calendar
+                  onChange={handleCalendarDateChange}
+                  dayStyle={renderDayStyle}
+                />
+              </Popover.Dropdown>
+            </Popover>
+            <ActionIcon onClick={() => handleAddDaysToSelectedDate(1)}>
+              <IconArrowRight size={30} />
+            </ActionIcon>
+          </Group>
+        </Group>
         <Grid>
           {isLoading && (
             <>

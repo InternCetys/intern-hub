@@ -1,8 +1,9 @@
+import React from "react";
 import { Button, Group, Paper, Stack, Title, Text, Image } from "@mantine/core";
 import { IconCalendarPlus } from "@tabler/icons";
 const NextEvent = () => {
   return (
-    <Paper shadow="lg" withBorder style={{ width: "70%" }}>
+    <Paper shadow="lg" withBorder style={{ width: "70%", maxWidth: "1000px" }}>
       <Group position="apart">
         <Stack
           spacing="xl"

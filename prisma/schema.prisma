@@ -46,6 +46,8 @@ model User {
   accounts       Account[]
   sessions       Session[]
   isInternMember Boolean?  @default(false)
+  attendance    AttendanceOnUsers[]
+  admin Boolean @default(false)
 }
 
 model VerificationToken {
@@ -54,4 +56,25 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Attendance {
+  id String @id @default(cuid())
+  date DateTime @default(now()) @db.Date @unique
+  users AttendanceOnUsers[]
+}
+
+model AttendanceOnUsers {
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String 
+  attendance Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  attendanceId String
+
+  @@id([userId, attendanceId])
+}
+
+model InternSession {
+  id String @id @default(cuid())
+  title String
+  date DateTime @default(now()) @db.Date @unique
 }

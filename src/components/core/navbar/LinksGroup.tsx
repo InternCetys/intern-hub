@@ -50,6 +50,7 @@ const useStyles = createStyles((theme) => ({
     borderLeft: `1px solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
+    cursor: "pointer",
 
     "&:hover": {
       backgroundColor:

@@ -5,6 +5,8 @@ import {
   Avatar,
   Text,
   createStyles,
+  Stack,
+  Badge,
 } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons";
 
@@ -29,6 +31,7 @@ interface UserButtonProps extends UnstyledButtonProps {
   name: string;
   email: string;
   icon?: React.ReactNode;
+  admin?: boolean;
 }
 
 export function UserButton({
@@ -36,6 +39,7 @@ export function UserButton({
   name,
   email,
   icon,
+  admin = false,
   ...others
 }: UserButtonProps) {
   const { classes } = useStyles();
@@ -46,9 +50,12 @@ export function UserButton({
         <Avatar src={image} radius="xl" />
 
         <div style={{ flex: 1 }}>
-          <Text size="sm" weight={500}>
-            {name}
-          </Text>
+          <Group>
+            <Text size="sm" weight={500}>
+              {name}
+            </Text>
+            {admin && <Badge>Admin</Badge>}
+          </Group>
 
           <Text color="dimmed" size="xs">
             {email}

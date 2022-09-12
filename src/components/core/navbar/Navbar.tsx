@@ -19,6 +19,7 @@ import {
   IconLogout,
   IconUser,
   IconLock,
+  IconFile,
 } from "@tabler/icons";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./LinksGroup";
@@ -44,6 +45,11 @@ const userLinks = [
     label: "Project Gallery",
     icon: IconPresentationAnalytics,
     link: "/app/projects",
+  },
+  {
+    label: "Resources",
+    icon: IconFile,
+    link: "/app/resources",
   },
   { label: "Leetcode Contest", icon: IconTrophy, link: "/app/contest" },
 ];

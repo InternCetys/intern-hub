@@ -10,72 +10,38 @@ import {
   Modal,
   Select,
   Stack,
+  useMantineTheme,
 } from "@mantine/core";
-import { IconFile } from "@tabler/icons";
+import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { IconFile, IconPhoto, IconUpload, IconX } from "@tabler/icons";
 import Image from "next/image";
 import React, { useState } from "react";
+import { trpc } from "../../utils/trpc";
+import NewResourceModal from "./NewResourceModal";
+import ResourceCard from "./ResourceCard";
 
 const ResourcesRoot = () => {
   const [isCreateResourceOpen, setIsCreateResourceOpen] = useState(false);
+
+  const { isLoading, data: resources } = trpc.useQuery([
+    "resource.getResources",
+  ]);
+
   return (
     <>
       <Title>Resources</Title>
       <TextInput label="Search Resources" mt={20} />
       <Grid mt={30}>
-        <Grid.Col span={4}>
-          <Card shadow="sm" p="lg" radius="md" withBorder>
-            <IconFile />
-            <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>Presentacion Proyectos</Text>
-              <Badge color="pink" variant="light">
-                Slides
-              </Badge>
-            </Group>
-
-            <Text size="sm" color="dimmed">
-              Como crear un proyecto nuevo
-            </Text>
-            <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-              Descargar
-            </Button>
-          </Card>
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Card shadow="sm" p="lg" radius="md" withBorder>
-            <IconFile />
-            <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>Presentacion Proyectos</Text>
-              <Badge color="pink" variant="light">
-                Slides
-              </Badge>
-            </Group>
-
-            <Text size="sm" color="dimmed">
-              Como crear un proyecto nuevo
-            </Text>
-            <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-              Descargar
-            </Button>
-          </Card>
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Card shadow="sm" p="lg" radius="md" withBorder>
-            <IconFile />
-            <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>Presentacion Proyectos</Text>
-              <Badge color="pink" variant="light">
-                Slides
-              </Badge>
-            </Group>
-
-            <Text size="sm" color="dimmed">
-              Como crear un proyecto nuevo
-            </Text>
-            <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-              Descargar
-            </Button>
-          </Card>
-        </Grid.Col>
+        {resources?.map((resource) => (
+          <Grid.Col span={4} key={resource.id}>
+            <ResourceCard
+              title={resource.title}
+              description={resource.description}
+              type={resource.type}
+              url={resource.link}
+            />
+          </Grid.Col>
+        ))}
       </Grid>
       <Button
         style={{ position: "absolute", right: 10, bottom: 10 }}
@@ -83,36 +49,10 @@ const ResourcesRoot = () => {
       >
         Add Resource
       </Button>
-      <Modal
-        opened={isCreateResourceOpen}
-        onClose={() => setIsCreateResourceOpen(false)}
-        title="Add Resource"
-      >
-        <Stack>
-          <TextInput label="Title" />
-          <TextInput label="Description" />
-          <Select
-            label="Category"
-            searchable
-            data={[
-              { label: "Slides", value: "slide" },
-              { label: "Website", value: "website" },
-              { label: "Document", value: "document" },
-              { label: "Video", value: "video" },
-            ]}
-          />
-          <Select
-            label="Linked Session"
-            searchable
-            data={[
-              { label: "Slides", value: "slide" },
-              { label: "Website", value: "website" },
-              { label: "Document", value: "document" },
-              { label: "Video", value: "video" },
-            ]}
-          />
-        </Stack>
-      </Modal>
+      <NewResourceModal
+        isCreateResourceOpen={isCreateResourceOpen}
+        setIsCreateResourceOpen={setIsCreateResourceOpen}
+      />
     </>
   );
 };

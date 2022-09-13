@@ -85,15 +85,17 @@ model Resource {
   title String
   description String
   link String
-  type String
+  type ResourceType
   date DateTime @default(now()) @db.Date @unique
   internSession InternSession? @relation(fields: [internSessionId], references:[id], onDelete: SetNull)
   internSessionId String?
+}
 
-
-
-
-
-
+enum ResourceType  {
+  SLIDES
+  VIDEO
+  PDF
+  DOCUMENT
+  OTHER
 }
 

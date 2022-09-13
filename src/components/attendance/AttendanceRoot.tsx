@@ -223,7 +223,7 @@ const InternSessionDialog = ({ isOpen, date }: InternSessionDialogProps) => {
   });
 
   const addDayAsInternSession = trpc.useMutation(
-    "attendance.addDayAsInternSession",
+    "internSessions.addDayAsInternSession",
     {
       onSuccess: () => {
         utils.invalidateQueries([

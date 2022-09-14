@@ -24,7 +24,7 @@ export const userRouter = createRouter()
         throw new Error("not logged in");
       }
       const users = await req.ctx.prisma.user.findMany({
-        where: { isInternMember: false },
+        where: { isInternMember: true },
         select: { id: true, name: true, email: true, image: true },
       });
 

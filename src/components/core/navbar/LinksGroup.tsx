@@ -70,6 +70,7 @@ interface LinksGroupProps {
   icon: TablerIcon;
   label: string;
   initiallyOpened?: boolean;
+  disabled?: boolean;
   link?: string;
   links?: { label: string; link: string }[];
 }
@@ -80,6 +81,7 @@ export function LinksGroup({
   initiallyOpened,
   link,
   links,
+  disabled = false,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
@@ -97,6 +99,7 @@ export function LinksGroup({
   return (
     <>
       <UnstyledButton
+        disabled={disabled}
         onClick={() =>
           items.length > 0 ? setOpened((o) => !o) : router.push(link || "")
         }

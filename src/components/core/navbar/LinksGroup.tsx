@@ -96,6 +96,10 @@ export function LinksGroup({
     </Link>
   ));
 
+  if (disabled) {
+    return <></>;
+  }
+
   return (
     <>
       <UnstyledButton

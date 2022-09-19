@@ -80,7 +80,8 @@ model InternSession {
 }
 
 model projects {
-  owner User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  owner User @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId     Int @id @default(autoincrement())
   name          String
   description   String
   image         String

@@ -83,6 +83,6 @@ model projects {
   owner User @relation(fields: [userId], references: [id], onDelete: Cascade)
   name          String
   description   String
-  image         String?
-  repo          String?
+  image         String
+  repo          String
 }

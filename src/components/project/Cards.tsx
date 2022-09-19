@@ -1,4 +1,4 @@
-import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
+import { Card, Image, Text, Badge, Button, Group, Space } from '@mantine/core';
 import React from 'react';
 
 const ProjectView = () =>  {

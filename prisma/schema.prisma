@@ -78,3 +78,11 @@ model InternSession {
   title String
   date DateTime @default(now()) @db.Date @unique
 }
+
+model projects {
+  owner User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  description   String
+  image         String?
+  repo          String?
+}

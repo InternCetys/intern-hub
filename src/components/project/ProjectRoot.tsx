@@ -1,4 +1,4 @@
-import { Card, Title,Text, Space  } from "@mantine/core";
+import { Card, Title,Text, Space, Grid  } from "@mantine/core";
 import ProjectView from "./Cards";
 import React from "react";
 
@@ -7,9 +7,12 @@ const ProjectRoot = () => {
     <div>
       <Title>Project Gallery</Title>
       <Space w="md" h="md" />
-      <ProjectView />
-      <Space w="md" h="md" />
-      <ProjectView />
+      <Grid>
+        <Space w="md" h="md" />
+        <ProjectView />
+        <Space w="md" h="md" />
+        <ProjectView />
+      </Grid>
     </div>
 
   )

@@ -12,6 +12,7 @@ import {
   Textarea,
   Card,
   ActionIcon,
+  Tabs,
 } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
@@ -41,6 +42,7 @@ interface FormTypes {
   type: ResourceType | "";
   session: string;
   file: File | null;
+  link: string;
 }
 const resourceTypeSelectItems: Array<{ label: string; value: ResourceType }> = [
   { label: "Document", value: "DOCUMENT" },
@@ -58,6 +60,7 @@ const NewResourceModal = ({
     trpc.useQuery(["internSessions.getInternSessionsForSelectInput"]);
 
   const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [activeTab, setActiveTab] = useState<string | null>("file");
 
   const utils = trpc.useContext();
 
@@ -68,6 +71,7 @@ const NewResourceModal = ({
       type: "",
       session: "",
       file: null,
+      link: "",
     },
     validate: {
       title: (value) => (value.length > 0 ? null : "Title is required"),
@@ -80,6 +84,20 @@ const NewResourceModal = ({
   });
 
   const handleFormSubmit = async (values: FormTypes) => {
+    if (activeTab === "link") {
+      if (values.type === "") {
+        return;
+      }
+      createResource.mutate({
+        title: values.title,
+        description: values.description,
+        type: values.type,
+        fileURL: values.link,
+        session: values.session,
+      });
+      return;
+    }
+
     if (values.file === null) {
       showNotification({ message: "Please upload a file", color: "red" });
       return;
@@ -118,6 +136,7 @@ const NewResourceModal = ({
     onSuccess: () => {
       utils.invalidateQueries("resource.getResources");
       showNotification({ message: "Resource created", color: "green" });
+      setIsCreateResourceOpen(false);
     },
   });
 
@@ -155,26 +174,49 @@ const NewResourceModal = ({
             disabled={isLoadingInternSessions}
             {...form.getInputProps("session")}
           />
-          <Input.Wrapper label="Upload Files" withAsterisk>
-            <ResourceDropzone
-              onDrop={(file) => form.setFieldValue("file", file)}
-              onReject={(error) => form.setErrors({ file: error })}
-              isLoading={isUploadingFile}
-            />
-          </Input.Wrapper>
-          {form.values.file && (
-            <Card shadow={"sm"} withBorder>
-              <Group position="apart">
-                <Group>
-                  <IconFile />
-                  {form.values.file.name}
-                </Group>
-                <ActionIcon color={"red"} variant={"light"}>
-                  <IconTrash size={20} />
-                </ActionIcon>
-              </Group>
-            </Card>
-          )}
+          <Tabs
+            defaultValue="file"
+            value={activeTab}
+            onTabChange={setActiveTab}
+          >
+            <Tabs.List>
+              <Tabs.Tab value="file">File</Tabs.Tab>
+              <Tabs.Tab value="link">Link</Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="file" pt="xs">
+              <Input.Wrapper label="Upload Files">
+                <ResourceDropzone
+                  onDrop={(file) => form.setFieldValue("file", file)}
+                  onReject={(error) => form.setErrors({ file: error })}
+                  isLoading={isUploadingFile}
+                />
+              </Input.Wrapper>
+              {form.values.file && (
+                <Card shadow={"sm"} withBorder mt="xs">
+                  <Group position="apart">
+                    <Group>
+                      <IconFile />
+                      {form.values.file.name}
+                    </Group>
+                    <ActionIcon
+                      color={"red"}
+                      variant={"light"}
+                      onClick={() => form.setFieldValue("file", null)}
+                    >
+                      <IconTrash size={20} />
+                    </ActionIcon>
+                  </Group>
+                </Card>
+              )}
+            </Tabs.Panel>
+            <Tabs.Panel value="link" pt="xs">
+              <TextInput
+                label="URL"
+                {...form.getInputProps("link")}
+                withAsterisk
+              />
+            </Tabs.Panel>
+          </Tabs>
         </Stack>
         <Group position="right" mt={20}>
           <Button

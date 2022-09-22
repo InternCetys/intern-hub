@@ -26,7 +26,28 @@ export const resourceRouter = createRouter()
     },
   })
   .query("getResources", {
+    input: z.object({
+      query: z.string().optional(),
+    }),
     resolve: async (req) => {
-      return req.ctx.prisma.resource.findMany();
+      console.log(req.input.query);
+      return req.ctx.prisma.resource.findMany({
+        where: {
+          OR: [
+            {
+              title: {
+                contains: req.input.query?.trim().toLowerCase(),
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: req.input.query?.trim().toLowerCase(),
+                mode: "insensitive",
+              },
+            },
+          ],
+        },
+      });
     },
   });

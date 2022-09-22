@@ -48,6 +48,9 @@ export const resourceRouter = createRouter()
             },
           ],
         },
+        include: {
+          internSession: true,
+        },
       });
     },
   });

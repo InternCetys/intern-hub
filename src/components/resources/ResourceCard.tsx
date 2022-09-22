@@ -1,5 +1,6 @@
 import { Card, Group, Badge, Button, Text, Space, Stack } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
+import { InternSession } from "@prisma/client";
 import { IconFile } from "@tabler/icons";
 import React from "react";
 import { supabase } from "../../utils/supabase";
@@ -9,9 +10,16 @@ interface Props {
   url: string;
   type: string;
   description: string;
+  internSession: InternSession;
 }
 
-const ResourceCard = ({ title, description, type, url }: Props) => {
+const ResourceCard = ({
+  title,
+  description,
+  type,
+  url,
+  internSession,
+}: Props) => {
   const isWebsiteLink = url.startsWith("http");
 
   const handleDownload = async () => {
@@ -56,6 +64,15 @@ const ResourceCard = ({ title, description, type, url }: Props) => {
             </Text>
           </div>
         </div>
+        <div>
+          <Card withBorder shadow={"sm"}>
+            <Text size="sm">Ligado a sesión: </Text>
+            <Text size="sm" color="dimmed" lineClamp={2}>
+              {internSession.title}
+            </Text>
+          </Card>
+        </div>
+
         <div
           style={{
             flex: 1,

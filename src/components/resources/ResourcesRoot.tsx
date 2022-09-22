@@ -51,6 +51,7 @@ const ResourcesRoot = () => {
               description={resource.description}
               type={resource.type}
               url={resource.link}
+              internSession={resource.internSession}
             />
           </Grid.Col>
         ))}

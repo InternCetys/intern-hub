@@ -39,8 +39,8 @@ const ResourceCard = ({ title, description, type, url }: Props) => {
   };
 
   return (
-    <Card shadow="sm" p="lg" radius="md" withBorder style={{ height: "240px" }}>
-      <Stack justify={"space-around"}>
+    <Card shadow="sm" p="lg" radius="md" withBorder>
+      <Stack>
         <div>
           <IconFile />
           <Group position="apart" mt="md" mb="xs">
@@ -50,25 +50,31 @@ const ResourceCard = ({ title, description, type, url }: Props) => {
             </Badge>
           </Group>
 
-          <Text
-            size="sm"
-            color="dimmed"
-            lineClamp={2}
-            style={{ height: "50px" }}
-          >
-            {description}
-          </Text>
+          <div style={{ height: "50px" }}>
+            <Text size="sm" color="dimmed" lineClamp={2}>
+              {description}
+            </Text>
+          </div>
         </div>
-        <Button
-          variant="light"
-          color="blue"
-          fullWidth
-          mt="md"
-          radius="md"
-          onClick={() => handleDownload()}
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "end",
+          }}
         >
-          {isWebsiteLink ? "Open" : "Download"}
-        </Button>
+          <Button
+            variant="light"
+            color="blue"
+            fullWidth
+            mt="md"
+            radius="md"
+            onClick={() => handleDownload()}
+          >
+            {isWebsiteLink ? "Open" : "Download"}
+          </Button>
+        </div>
       </Stack>
     </Card>
   );

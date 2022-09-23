@@ -33,7 +33,7 @@ const AttendanceForm = ({
   setSelectedMembers,
   isEditing,
   cancelEdit,
-  selectedDate
+  selectedDate,
 }: Props) => {
   const { isLoading, data: users } = trpc.useQuery([
     "user.getAllUsersForSelectInput",
@@ -118,7 +118,7 @@ const AttendanceForm = ({
             <Button
               fullWidth
               onClick={handleAttendanceSubmit}
-              loading={createAttendance.isLoading}
+              loading={createAttendance.isLoading || updateAttendance.isLoading}
             >
               {isEditing ? "Update Attendance" : "Submit Attendance"}
             </Button>

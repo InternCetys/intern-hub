@@ -19,6 +19,7 @@ import {
   IconLogout,
   IconUser,
   IconLock,
+  IconFile,
 } from "@tabler/icons";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./LinksGroup";
@@ -29,23 +30,41 @@ import { useState } from "react";
 import { signOut } from "next-auth/react";
 
 const userLinks = [
-  { label: "Dashboard", icon: IconGauge, link: "/app/dashboard" },
+  {
+    label: "Dashboard",
+    icon: IconGauge,
+    link: "/app/dashboard",
+    disabled: true,
+  },
   {
     label: "Problems of the Week",
     icon: IconNotes,
     link: "/app/potw",
+    disabled: true,
   },
   {
     label: "Upcoming Events",
     icon: IconCalendarStats,
     link: "/app/events",
+    disabled: true,
   },
   {
     label: "Project Gallery",
     icon: IconPresentationAnalytics,
     link: "/app/projects",
+    disabled: true,
   },
-  { label: "Leetcode Contest", icon: IconTrophy, link: "/app/contest" },
+  {
+    label: "Resources",
+    icon: IconFile,
+    link: "/app/resources",
+  },
+  {
+    label: "Leetcode Contest",
+    icon: IconTrophy,
+    link: "/app/contest",
+    disabled: true,
+  },
 ];
 
 const adminLinks = [

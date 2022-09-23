@@ -70,17 +70,6 @@ export const attendanceRouter = createRouter()
       });
     },
   })
-  .mutation("addDayAsInternSession", {
-    input: z.object({
-      title: z.string(),
-      date: z.string(),
-    }),
-    resolve: async (req) => {
-      return req.ctx.prisma.internSession.create({
-        data: { date: req.input.date, title: req.input.title },
-      });
-    },
-  })
   .query("isInternSession", {
     input: z.string(),
     resolve: async (req) => {

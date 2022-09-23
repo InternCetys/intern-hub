@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -78,6 +79,7 @@ model InternSession {
   id String @id @default(cuid())
   title String
   date DateTime @default(now()) @db.Date @unique
+  resources Resource[]
 }
 
 model Project {
@@ -89,3 +91,24 @@ model Project {
   owner User @relation(fields: [projectId], references: [id], onDelete: SetNull)
   projectId     String
 }
+  
+
+model Resource {
+  id String @id @default(cuid())
+  title String
+  description String
+  link String
+  type ResourceType
+  date DateTime @default(now()) @db.Date @unique
+  internSession InternSession? @relation(fields: [internSessionId], references:[id], onDelete: SetNull)
+  internSessionId String?
+}
+
+enum ResourceType  {
+  SLIDES
+  VIDEO
+  PDF
+  DOCUMENT
+  OTHER
+}
+

@@ -9,7 +9,7 @@ interface Props {
 }
 const Shell = ({ children }: Props) => {
   const router = useRouter();
-  const { data, isLoading } = trpc.useQuery(["user.getIsInternMember"], {
+  const { data, isLoading } = trpc.useQuery(["user.getUserRoles"], {
     onSuccess: (data) => {
       if (!data?.isInternMember) {
         router.push("/noaccess");
@@ -17,7 +17,11 @@ const Shell = ({ children }: Props) => {
     },
   });
 
-  return <AppShell navbar={<NavbarNested />}>{children}</AppShell>;
+  return (
+    <AppShell navbar={<NavbarNested isAdmin={data?.admin || false} />}>
+      {children}
+    </AppShell>
+  );
 };
 
 export default Shell;

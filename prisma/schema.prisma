@@ -46,6 +46,8 @@ model User {
   accounts       Account[]
   sessions       Session[]
   isInternMember Boolean?  @default(false)
+  badges         Badges    @relation(fields: [badgeId], references: [id], onDelete: SetNull)
+  badgeId        String[]  @default([])
 }
 
 model VerificationToken {
@@ -57,7 +59,9 @@ model VerificationToken {
 }
 
 model Badges {
-  name  String   @unique 
-  imageURL String @unique
-
+  id          String   @id @default(cuid())
+  name        String   @unique @default(" ") 
+  imageURL    String   @unique
+  descrption  String   @default(" ")
+  usuarios     User[]
 }

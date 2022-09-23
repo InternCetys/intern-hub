@@ -50,6 +50,7 @@ const useStyles = createStyles((theme) => ({
     borderLeft: `1px solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
+    cursor: "pointer",
 
     "&:hover": {
       backgroundColor:
@@ -69,6 +70,7 @@ interface LinksGroupProps {
   icon: TablerIcon;
   label: string;
   initiallyOpened?: boolean;
+  disabled?: boolean;
   link?: string;
   links?: { label: string; link: string }[];
 }
@@ -79,6 +81,7 @@ export function LinksGroup({
   initiallyOpened,
   link,
   links,
+  disabled = false,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
@@ -93,9 +96,14 @@ export function LinksGroup({
     </Link>
   ));
 
+  if (disabled) {
+    return <></>;
+  }
+
   return (
     <>
       <UnstyledButton
+        disabled={disabled}
         onClick={() =>
           items.length > 0 ? setOpened((o) => !o) : router.push(link || "")
         }

@@ -4,6 +4,7 @@ import React from "react";
 const ProfileRoot = () => {
   return (
     <Title>New Profile MF</Title>
+    
   );
 
 };

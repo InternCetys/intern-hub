@@ -48,7 +48,7 @@ model User {
   isInternMember Boolean?  @default(false)
   attendance    AttendanceOnUsers[]
   admin Boolean @default(false)
-  projects Projects @relation()
+  projects Project[]
 }
 
 model VerificationToken {
@@ -80,11 +80,12 @@ model InternSession {
   date DateTime @default(now()) @db.Date @unique
 }
 
-model Projects {
-  owner User @relation(fields: [projectId], references: [id])
-  projectId     Int @id @default(autoincrement())
+model Project {
+  id String @id @default(cuid())
   name          String
   description   String
   image         String
   repo          String
+  owner User @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  projectId     String
 }

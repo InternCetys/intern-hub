@@ -62,7 +62,7 @@ const ResourceDropzone = ({
             <IconPhoto size={50} stroke={1.5} />
           </Center>
           <Text size="xl" inline align="center">
-            Drag the resource here or click to select files
+            Arrastra el archivo aquí o haz click para seleccionarlo
           </Text>
         </Dropzone.Idle>
       </Group>

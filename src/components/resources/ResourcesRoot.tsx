@@ -38,11 +38,11 @@ const ResourcesRoot = () => {
   return (
     <>
       <Group>
-        <Title>Resources</Title>
+        <Title>Recursos</Title>
         {isLoading && <Loader />}
       </Group>
       <TextInput
-        label="Search Resources"
+        label="Buscar Recursos"
         mt={20}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
@@ -65,7 +65,7 @@ const ResourcesRoot = () => {
             style={{ position: "absolute", right: 10, bottom: 10 }}
             onClick={() => setIsCreateResourceOpen(true)}
           >
-            Add Resource
+            Agregar Recurso
           </Button>
           <NewResourceModal
             isCreateResourceOpen={isCreateResourceOpen}

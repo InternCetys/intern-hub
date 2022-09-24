@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL("/login", request.url));
   }
 
-  if (request.nextUrl.pathname.startsWith("/app")) {
+  if (request.nextUrl.pathname === "/app") {
     return NextResponse.rewrite(new URL("/app/resources", request.url));
   }
 }

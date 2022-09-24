@@ -10,7 +10,7 @@ interface Props {
   url: string;
   type: string;
   description: string;
-  internSession: InternSession;
+  internSession: InternSession | null;
 }
 
 const ResourceCard = ({
@@ -64,14 +64,16 @@ const ResourceCard = ({
             </Text>
           </div>
         </div>
-        <div>
-          <Card withBorder shadow={"sm"}>
-            <Text size="sm">Ligado a sesión: </Text>
-            <Text size="sm" color="dimmed" lineClamp={2}>
-              {internSession.title}
-            </Text>
-          </Card>
-        </div>
+        {internSession && (
+          <div>
+            <Card withBorder shadow={"sm"}>
+              <Text size="sm">Ligado a sesión: </Text>
+              <Text size="sm" color="dimmed" lineClamp={2}>
+                {internSession.title}
+              </Text>
+            </Card>
+          </div>
+        )}
 
         <div
           style={{

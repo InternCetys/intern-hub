@@ -18,6 +18,7 @@ import { useDebouncedState } from "@mantine/hooks";
 import { IconFile, IconPhoto, IconUpload, IconX } from "@tabler/icons";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useUser } from "../../hooks/useUser";
 import { trpc } from "../../utils/trpc";
 import NewResourceModal from "./NewResourceModal";
 import ResourceCard from "./ResourceCard";
@@ -26,6 +27,8 @@ const ResourcesRoot = () => {
   const [isCreateResourceOpen, setIsCreateResourceOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useDebouncedState("", 500);
+
+  const { user } = useUser();
 
   const { isLoading, data: resources } = trpc.useQuery([
     "resource.getResources",
@@ -56,16 +59,20 @@ const ResourcesRoot = () => {
           </Grid.Col>
         ))}
       </Grid>
-      <Button
-        style={{ position: "absolute", right: 10, bottom: 10 }}
-        onClick={() => setIsCreateResourceOpen(true)}
-      >
-        Add Resource
-      </Button>
-      <NewResourceModal
-        isCreateResourceOpen={isCreateResourceOpen}
-        setIsCreateResourceOpen={setIsCreateResourceOpen}
-      />
+      {user && user.admin && (
+        <>
+          <Button
+            style={{ position: "absolute", right: 10, bottom: 10 }}
+            onClick={() => setIsCreateResourceOpen(true)}
+          >
+            Add Resource
+          </Button>
+          <NewResourceModal
+            isCreateResourceOpen={isCreateResourceOpen}
+            setIsCreateResourceOpen={setIsCreateResourceOpen}
+          />
+        </>
+      )}
     </>
   );
 };

@@ -8,16 +8,51 @@ import {
   Stack,
   Title,
 } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import { ProblemStatus, UserStatusOnProblem } from "@prisma/client";
+import { User } from "next-auth";
 import React from "react";
+import { trpc } from "../../utils/trpc";
 
 interface Props {
+  problemId: string;
   opened: boolean;
   onClose: () => void;
   name: string;
-  solvedBy: string[];
+  solvedBy: (UserStatusOnProblem & { user: User })[];
 }
 
-const ProblemDrawer = ({ opened, onClose, name }: Props) => {
+const ProblemDrawer = ({
+  problemId,
+  opened,
+  onClose,
+  name,
+  solvedBy,
+}: Props) => {
+  const updateUserStatus = trpc.useMutation(["potw.updateProblemUserStatus"]);
+
+  const utils = trpc.useContext();
+
+  const handleUpdateUserStatus = async (status: ProblemStatus) => {
+    updateUserStatus.mutate(
+      {
+        problem: problemId,
+        status: status,
+      },
+      {
+        onSuccess: () => {
+          utils.invalidateQueries(["potw.getProblemsByWeek"]);
+        },
+        onError: () => {
+          showNotification({
+            message: "Error al actualizar tu status",
+            color: "red",
+          });
+        },
+      }
+    );
+  };
+
   return (
     <Drawer
       opened={opened}
@@ -29,46 +64,27 @@ const ProblemDrawer = ({ opened, onClose, name }: Props) => {
     >
       <Title order={4}>Status</Title>
       <Stack my={20}>
-        <Paper withBorder shadow="md" p={10}>
-          <Group position="apart">
-            <Group>
-              <Avatar />
-              <Title order={5}>Daniel</Title>
+        {solvedBy.map((user) => (
+          <Paper withBorder shadow="md" p={10}>
+            <Group position="apart">
+              <Group>
+                <Avatar />
+                <Title order={5}>{user.user.name}</Title>
+              </Group>
+              <Badge color={"green"}>{user.status}</Badge>
             </Group>
-            <Badge color={"green"}>Resuelto</Badge>
-          </Group>
-        </Paper>
-        <Paper withBorder shadow="md" p={10}>
-          <Group position="apart">
-            <Group>
-              <Avatar />
-              <Title order={5}>Oscar</Title>
-            </Group>
-            <Badge color="green">Resuelto</Badge>
-          </Group>
-        </Paper>
-        <Paper withBorder shadow="md" p={10}>
-          <Group position="apart">
-            <Group>
-              <Avatar />
-              <Title order={5}>Adrian</Title>
-            </Group>
-            <Badge>En progreso</Badge>
-          </Group>
-        </Paper>
-        <Paper withBorder shadow="md" p={10}>
-          <Group position="apart">
-            <Group>
-              <Avatar />
-              <Title order={5}>Solis</Title>
-            </Group>
-            <Badge color="gray">No iniciado</Badge>
-          </Group>
-        </Paper>
+          </Paper>
+        ))}
       </Stack>
       <Stack>
-        <Button fullWidth>Marcar como en progreso</Button>
-        <Button fullWidth color="green">
+        <Button fullWidth onClick={() => handleUpdateUserStatus("ATTEMPTED")}>
+          Marcar como en progreso
+        </Button>
+        <Button
+          fullWidth
+          color="green"
+          onClick={() => handleUpdateUserStatus("SOLVED")}
+        >
           Marcar como resuelto
         </Button>
       </Stack>

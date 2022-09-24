@@ -7,6 +7,7 @@ import {
   Avatar,
   Tooltip,
 } from "@mantine/core";
+import { User, UserStatusOnProblem } from "@prisma/client";
 import { IconExternalLink } from "@tabler/icons";
 import React, { useState } from "react";
 import ProblemDrawer from "./ProblemDrawer";
@@ -16,7 +17,7 @@ interface Props {
   name: string;
   link: string;
   difficulty: string;
-  solvedBy: string[];
+  solvedBy: (UserStatusOnProblem & { user: User })[];
 }
 const ProblemCard = ({ id, name, link, difficulty, solvedBy }: Props) => {
   const [openProblemDetailsDrawer, setOpenProblemDetailsDrawer] =
@@ -42,20 +43,20 @@ const ProblemCard = ({ id, name, link, difficulty, solvedBy }: Props) => {
             <Badge color="green">{difficulty}</Badge>
           </Group>
           <Avatar.Group spacing="sm">
-            <Tooltip label="Daniel Barocio" withArrow>
-              <Avatar radius="xl">DB</Avatar>
-            </Tooltip>
-            <Tooltip label="Oscar Encinas" withArrow>
-              <Avatar radius="xl">OE</Avatar>
-            </Tooltip>
+            {solvedBy.map((user) => (
+              <Tooltip label={user.user.name} withArrow>
+                <Avatar radius="xl" src={user.user.image} />
+              </Tooltip>
+            ))}
           </Avatar.Group>
         </Group>
       </Paper>
       <ProblemDrawer
+        problemId={id}
         name={name}
         onClose={() => setOpenProblemDetailsDrawer(false)}
         opened={openProblemDetailsDrawer}
-        solvedBy={[]}
+        solvedBy={solvedBy}
       />
     </>
   );

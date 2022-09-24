@@ -97,6 +97,7 @@ model Problem {
   id String @id @default(cuid())
   title String
   link String
+  difficulty ProblemDifficulty
   week Week @relation(fields: [weekId], references: [id], onDelete: Cascade)
   weekId String
   userStatus UserStatusOnProblem[]
@@ -104,9 +105,12 @@ model Problem {
 
 model Week {
   id String @id @default(cuid())
+  number Int   @unique
   title String
   problems Problem[]
   resources WeekResource[]
+
+  @@index([number], type: Hash)
 }
 
 model WeekResource {
@@ -140,4 +144,11 @@ enum ProblemStatus {
   SOLVED
   ATTEMPTED
   NOT_ATTEMPTED
+}
+
+enum ProblemDifficulty {
+  EASY
+  MEDIUM
+  HARD
+  INSANE
 }

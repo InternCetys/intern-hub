@@ -18,7 +18,7 @@ interface Props {
 const ResourceDropzone = ({
   onDrop,
   onReject,
-  maxSize = 3 * 1024 ** 2,
+  maxSize = 10 * 1024 ** 2,
   isLoading,
 }: Props) => {
   const theme = useMantineTheme();

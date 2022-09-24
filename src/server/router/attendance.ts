@@ -8,6 +8,7 @@ export const attendanceRouter = createRouter()
       day: z.string(),
     }),
     resolve: async (req) => {
+      req.ctx.prisma.project.create({data: {owner: {connect: {id: }}}})
       return req.ctx.prisma.attendance.create({
         data: {
           date: req.input.day,

@@ -9,6 +9,12 @@ import { resourceRouter } from "./resource";
 
 export const appRouter = createRouter()
   .transformer(superjson)
+  .middleware(async ({ ctx, next }) => {
+    if (!ctx.session) {
+      throw new Error("not logged in");
+    }
+    return next();
+  })
   .merge("user.", userRouter)
   .merge("attendance.", attendanceRouter)
   .merge("internSessions.", internSessionsRouter)

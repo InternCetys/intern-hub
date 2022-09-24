@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import AttendanceRoot from "../../../components/attendance/AttendanceRoot";
+import ProtectedRoute from "../../../components/core/ProtectedRoute";
 import Shell from "../../../components/core/Shell";
 
 const potw = () => {
@@ -11,9 +12,11 @@ const potw = () => {
         <meta name="description" content="CETYS Intern Hub" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Shell>
-        <AttendanceRoot />
-      </Shell>
+      <ProtectedRoute>
+        <Shell>
+          <AttendanceRoot />
+        </Shell>
+      </ProtectedRoute>
     </>
   );
 };

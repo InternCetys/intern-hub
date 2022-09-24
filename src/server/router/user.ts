@@ -4,25 +4,13 @@ import { createRouter } from "./context";
 import { z } from "zod";
 
 export const userRouter = createRouter()
-  .query("getUserRoles", {
+  .query("getUser", {
     async resolve(req) {
-      if (!req.ctx.session) {
-        throw new Error("not logged in");
-      }
-
-      const { user } = req.ctx.session;
-      return req.ctx.prisma.user.findUnique({
-        where: { id: user.id },
-        select: { isInternMember: true, admin: true },
-      });
+      return req.ctx.user;
     },
   })
   .query("getAllUsersForSelectInput", {
     async resolve(req) {
-      // Should be admin only
-      if (!req.ctx.session) {
-        throw new Error("not logged in");
-      }
       const users = await req.ctx.prisma.user.findMany({
         where: { isInternMember: true },
         select: { id: true, name: true, email: true, image: true },

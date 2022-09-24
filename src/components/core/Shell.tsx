@@ -1,6 +1,7 @@
 import { AppShell, LoadingOverlay, Title } from "@mantine/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useUser } from "../../hooks/useUser";
 import { trpc } from "../../utils/trpc";
 import { NavbarNested } from "./navbar/Navbar";
 
@@ -8,17 +9,10 @@ interface Props {
   children: React.ReactNode;
 }
 const Shell = ({ children }: Props) => {
-  const router = useRouter();
-  const { data, isLoading } = trpc.useQuery(["user.getUserRoles"], {
-    onSuccess: (data) => {
-      if (!data?.isInternMember) {
-        router.push("/noaccess");
-      }
-    },
-  });
+  const { user } = useUser();
 
   return (
-    <AppShell navbar={<NavbarNested isAdmin={data?.admin || false} />}>
+    <AppShell navbar={<NavbarNested isAdmin={user?.admin || false} />}>
       {children}
     </AppShell>
   );

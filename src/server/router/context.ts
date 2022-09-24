@@ -29,7 +29,12 @@ export const createContext = async (
 ) => {
   const { req } = opts;
   const session = await getSession({ req });
-  return { session, ...(await createContextInner({})) };
+  const innerContext = await createContextInner({});
+  const userInfo = await innerContext.prisma.user.findUnique({
+    where: { id: session?.user.id },
+  });
+
+  return { session, user: userInfo, ...innerContext };
 };
 
 type Context = trpc.inferAsyncReturnType<typeof createContext>;

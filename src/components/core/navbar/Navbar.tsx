@@ -37,10 +37,9 @@ const userLinks = [
     disabled: true,
   },
   {
-    label: "POTW",
+    label: "Problemas de la Semana",
     icon: IconNotes,
     link: "/app/potw",
-    disabled: true,
   },
   {
     label: "Eventos",

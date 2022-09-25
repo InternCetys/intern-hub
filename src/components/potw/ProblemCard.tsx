@@ -48,6 +48,13 @@ const ProblemCard = ({ id, name, link, difficulty, status }: Props) => {
     return !!status.find((s) => s.userId === user.id && s.status === "SOLVED");
   }, [status, user]);
 
+  const userAttempted = useMemo(() => {
+    if (!user) return false;
+    return !!status.find(
+      (s) => s.userId === user.id && s.status === "ATTEMPTED"
+    );
+  }, [status, user]);
+
   return (
     <>
       <Paper
@@ -70,6 +77,7 @@ const ProblemCard = ({ id, name, link, difficulty, status }: Props) => {
             </Anchor>
             <Badge color={DifficultyBadgeColor[difficulty]}>{difficulty}</Badge>
             {userSolved && <Badge color={"yellow"}>Solved</Badge>}
+            {userAttempted && <Badge color={"blue"}>Attempted</Badge>}
           </Group>
           <Avatar.Group
             spacing="sm"

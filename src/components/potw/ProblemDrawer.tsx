@@ -82,13 +82,18 @@ const ProblemDrawer = ({ problemId, opened, onClose, name, status }: Props) => {
         ))}
       </Stack>
       <Stack>
-        <Button fullWidth onClick={() => handleUpdateUserStatus("ATTEMPTED")}>
+        <Button
+          fullWidth
+          onClick={() => handleUpdateUserStatus("ATTEMPTED")}
+          loading={updateUserStatus.isLoading}
+        >
           Marcar como en progreso
         </Button>
         <Button
           fullWidth
           color="green"
           onClick={() => handleUpdateUserStatus("SOLVED")}
+          loading={updateUserStatus.isLoading}
         >
           Marcar como resuelto
         </Button>

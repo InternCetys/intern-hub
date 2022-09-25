@@ -9,6 +9,7 @@ import {
   Paper,
   Popover,
   SegmentedControl,
+  Skeleton,
   Stack,
   Text,
   Title,
@@ -96,6 +97,9 @@ const PotwRoot = () => {
         <Title>Problemas de la Semana</Title>
         <Code sx={{ fontWeight: 700 }}>2.0</Code>
       </Group>
+      {isLoadingWeek && (
+        <Skeleton visible={true} width="40%" height={40} mt={20}></Skeleton>
+      )}
       <Title order={2} mt={20}>
         Tema: {week?.title}
       </Title>
@@ -126,6 +130,37 @@ const PotwRoot = () => {
       </Paper>
 
       <Stack mt={10}>
+        {isLoading && (
+          <>
+            <Skeleton visible={true}>
+              <ProblemCard
+                name=""
+                difficulty="EASY"
+                link=""
+                id=""
+                status={[]}
+              />
+            </Skeleton>
+            <Skeleton visible={true}>
+              <ProblemCard
+                name=""
+                difficulty="EASY"
+                link=""
+                id=""
+                status={[]}
+              />
+            </Skeleton>
+            <Skeleton visible={true}>
+              <ProblemCard
+                name=""
+                difficulty="EASY"
+                link=""
+                id=""
+                status={[]}
+              />
+            </Skeleton>
+          </>
+        )}
         {problems &&
           problems.map((problem) => (
             <ProblemCard

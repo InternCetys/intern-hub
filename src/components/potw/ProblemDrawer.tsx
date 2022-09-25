@@ -64,6 +64,11 @@ const ProblemDrawer = ({ problemId, opened, onClose, name, status }: Props) => {
     >
       <Title order={4}>Status</Title>
       <Stack my={20}>
+        {status.length === 0 && (
+          <Paper shadow="sm" p="xl" withBorder>
+            No hay usuarios que hayan intentado este problema
+          </Paper>
+        )}
         {status.map((user) => (
           <Paper withBorder shadow="md" p={10} key={user.userId}>
             <Group position="apart">

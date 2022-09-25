@@ -142,7 +142,7 @@ export function NavbarNested({ isAdmin }: Props) {
         <Group position="apart">
           <Logo />
           <Group>
-            <Code sx={{ fontWeight: 700 }}>0.0.1</Code>
+            <Code sx={{ fontWeight: 700 }}>0.0.2</Code>
             <ActionIcon
               variant="default"
               onClick={() => toggleColorScheme()}

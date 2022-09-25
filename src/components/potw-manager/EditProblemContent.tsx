@@ -110,6 +110,7 @@ const EditProblemContent = ({ weekNumber, weekId }: Props) => {
             color: "green",
           });
           utils.invalidateQueries(["potw.getProblemsByWeek"]);
+          form.reset();
         },
         onError: () => {
           showNotification({

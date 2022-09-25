@@ -35,7 +35,8 @@ const EditWeekContent = ({ number, name }: Props) => {
       {
         onSuccess: () => {
           utils.invalidateQueries(["potw.getAllWeeks"]);
-          utils.invalidateQueries(["potw.getCurrentWeek", number]);
+          utils.invalidateQueries(["potw.getCurrentWeek"]);
+          utils.invalidateQueries(["potw.getCurrentWeekById"]);
           showNotification({
             message: "Semana actualizada",
             color: "green",

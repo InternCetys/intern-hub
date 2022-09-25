@@ -49,6 +49,7 @@ model User {
   isInternMember Boolean?  @default(false)
   attendance    AttendanceOnUsers[]
   admin Boolean @default(false)
+  userStatusOnProblem UserStatusOnProblem[]
 }
 
 model VerificationToken {
@@ -92,6 +93,45 @@ model Resource {
   internSessionId String?
 }
 
+model Problem {
+  id String @id @default(cuid())
+  title String
+  link String
+  difficulty ProblemDifficulty
+  week Week @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  weekId String
+  userStatus UserStatusOnProblem[]
+}
+
+model Week {
+  id String @id @default(cuid())
+  number Int   @unique
+  title String
+  problems Problem[]
+  resources WeekResource[]
+
+  @@index([number], type: Hash)
+}
+
+model WeekResource {
+  id String @id @default(cuid())
+  title String
+  type ResourceType
+  link String
+  week Week @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  weekId String
+}
+
+model UserStatusOnProblem {
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  problemId String
+  status ProblemStatus
+
+  @@id([userId, problemId])
+}
+
 enum ResourceType  {
   SLIDES
   VIDEO
@@ -100,3 +140,15 @@ enum ResourceType  {
   OTHER
 }
 
+enum ProblemStatus {
+  SOLVED
+  ATTEMPTED
+  NOT_ATTEMPTED
+}
+
+enum ProblemDifficulty {
+  EASY
+  MEDIUM
+  HARD
+  INSANE
+}

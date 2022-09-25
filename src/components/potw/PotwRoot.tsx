@@ -41,56 +41,6 @@ const PotwRoot = () => {
     { week: 1 },
   ]);
 
-  const utils = trpc.useContext();
-
-  const createWeek = trpc.useMutation(["potw.createWeek"]);
-  const createProblem = trpc.useMutation(["potw.createProblem"]);
-
-  const handleCreateWeek = async () => {
-    createWeek.mutate(
-      {
-        number: 1,
-        name: "Arreglos",
-      },
-      {
-        onSuccess: () => {
-          utils.invalidateQueries(["potw.getCurrentWeek"]);
-          utils.invalidateQueries(["potw.getProblemsByWeek"]);
-        },
-        onError: () => {
-          showNotification({
-            message: "Error al crear la semana",
-            color: "red",
-          });
-        },
-      }
-    );
-  };
-
-  const handleCreateProblem = async () => {
-    if (!week) return;
-
-    createProblem.mutate(
-      {
-        title: "Two Sum",
-        difficulty: "INSANE",
-        week: week?.id,
-        link: "https://leetcode.com",
-      },
-      {
-        onSuccess: () => {
-          utils.invalidateQueries(["potw.getProblemsByWeek"]);
-        },
-        onError: () => {
-          showNotification({
-            message: "Error al crear problema",
-            color: "red",
-          });
-        },
-      }
-    );
-  };
-
   return (
     <div>
       <Group>
@@ -106,7 +56,7 @@ const PotwRoot = () => {
       <Group mt={10}>
         {resources &&
           resources.map((resource) => (
-            <Paper withBorder shadow={"md"} p={10}>
+            <Paper withBorder shadow={"md"} p={10} key={resource.id}>
               <Group>
                 <IconBrandYoutube />
                 <Text>{resource.title}</Text>
@@ -129,7 +79,7 @@ const PotwRoot = () => {
         />
       </Paper>
 
-      <Stack mt={10}>
+      <Stack mt={30}>
         {isLoading && (
           <>
             <Skeleton visible={true}>
@@ -164,6 +114,7 @@ const PotwRoot = () => {
         {problems &&
           problems.map((problem) => (
             <ProblemCard
+              key={problem.id}
               name={problem.title}
               difficulty={problem.difficulty}
               link={problem.link}
@@ -172,8 +123,6 @@ const PotwRoot = () => {
             />
           ))}
       </Stack>
-      <Button onClick={handleCreateWeek}>Crear Semana</Button>
-      <Button onClick={handleCreateProblem}>Crear Problema</Button>
     </div>
   );
 };

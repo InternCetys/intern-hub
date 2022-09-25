@@ -1,3 +1,4 @@
+import { createTRPCClient } from "@trpc/client";
 import { z } from "zod";
 import { createRouter } from "./context";
 
@@ -6,6 +7,33 @@ export const potwRouter = createRouter()
     input: z.number(),
     resolve: async (req) => {
       return req.ctx.prisma.week.findUnique({ where: { number: req.input } });
+    },
+  })
+  .query("getCurrentWeekById", {
+    input: z.string(),
+    resolve: async (req) => {
+      return req.ctx.prisma.week.findUnique({ where: { id: req.input } });
+    },
+  })
+  .query("getAllWeeks", {
+    resolve: async (req) => {
+      return req.ctx.prisma.week.findMany({ orderBy: { number: "desc" } });
+    },
+  })
+  .mutation("updateWeek", {
+    input: z.object({
+      oldWeekNumber: z.number(),
+      newWeekNumber: z.number(),
+      title: z.string(),
+    }),
+    resolve: async (req) => {
+      return req.ctx.prisma.week.update({
+        where: { number: req.input.oldWeekNumber },
+        data: {
+          number: req.input.newWeekNumber,
+          title: req.input.title,
+        },
+      });
     },
   })
   .query("getProblemsByWeek", {
@@ -35,6 +63,9 @@ export const potwRouter = createRouter()
       const problems = await req.ctx.prisma.problem.findMany({
         where: {
           weekId: week?.id,
+        },
+        orderBy: {
+          difficulty: "asc",
         },
         include: {
           userStatus: { include: { user: true } },
@@ -98,6 +129,33 @@ export const potwRouter = createRouter()
             connect: { id: req.input.week },
           },
         },
+      });
+    },
+  })
+  .mutation("editProblem", {
+    input: z.object({
+      id: z.string(),
+      week: z.string(),
+      title: z.string(),
+      link: z.string(),
+      difficulty: z.enum(["EASY", "MEDIUM", "HARD", "INSANE"]),
+    }),
+    resolve: async (req) => {
+      return req.ctx.prisma.problem.update({
+        where: { id: req.input.id },
+        data: {
+          title: req.input.title,
+          link: req.input.link,
+          difficulty: req.input.difficulty,
+        },
+      });
+    },
+  })
+  .mutation("deleteProblem", {
+    input: z.string(),
+    resolve: async (req) => {
+      return req.ctx.prisma.problem.delete({
+        where: { id: req.input },
       });
     },
   })

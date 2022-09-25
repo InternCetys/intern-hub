@@ -77,7 +77,7 @@ const ProblemCard = ({ id, name, link, difficulty, status }: Props) => {
             style={{ cursor: "pointer" }}
           >
             {solvedBy.map((user) => (
-              <Tooltip label={user.user.name} withArrow>
+              <Tooltip label={user.user.name} withArrow key={user.userId}>
                 <Avatar radius="xl" src={user.user.image} />
               </Tooltip>
             ))}

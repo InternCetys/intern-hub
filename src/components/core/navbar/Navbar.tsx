@@ -73,6 +73,7 @@ const adminLinks = [
     links: [
       { label: "Usuarios Activos", link: "/app/admin/attendance" },
       { label: "Stats", link: "/app/admin/stats" },
+      { label: "POTW Manager", link: "/app/admin/potw-manager" },
     ],
   },
 ];

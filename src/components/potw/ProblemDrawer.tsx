@@ -65,7 +65,7 @@ const ProblemDrawer = ({ problemId, opened, onClose, name, status }: Props) => {
       <Title order={4}>Status</Title>
       <Stack my={20}>
         {status.map((user) => (
-          <Paper withBorder shadow="md" p={10}>
+          <Paper withBorder shadow="md" p={10} key={user.userId}>
             <Group position="apart">
               <Group>
                 <Avatar src={user.user.image} radius="xl" />

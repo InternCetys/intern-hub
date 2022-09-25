@@ -59,13 +59,15 @@ const WeekEditorRoot = () => {
 
   const accordionChildren = [
     <EditWeekContent
+      key={0}
       name={currentWeek?.title || ""}
       number={currentWeek?.number || 0}
     />,
-    <EditResourceContent />,
+    <EditResourceContent key={1} />,
     <EditProblemContent
       weekNumber={currentWeek?.number || 0}
       weekId={weekId}
+      key={2}
     />,
   ];
   const items = charactersList.map((item, i) => (

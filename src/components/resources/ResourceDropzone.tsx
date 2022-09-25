@@ -18,7 +18,7 @@ interface Props {
 const ResourceDropzone = ({
   onDrop,
   onReject,
-  maxSize = 3 * 1024 ** 2,
+  maxSize = 10 * 1024 ** 2,
   isLoading,
 }: Props) => {
   const theme = useMantineTheme();
@@ -62,7 +62,7 @@ const ResourceDropzone = ({
             <IconPhoto size={50} stroke={1.5} />
           </Center>
           <Text size="xl" inline align="center">
-            Drag the resource here or click to select files
+            Arrastra el archivo aquí o haz click para seleccionarlo
           </Text>
         </Dropzone.Idle>
       </Group>

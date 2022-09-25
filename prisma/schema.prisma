@@ -63,9 +63,5 @@ model Badges {
   name        String   @unique @default(" ") 
   imageURL    String   @unique
   descrption  String   @default(" ")
-<<<<<<< Updated upstream
   usuarios     User[]
-=======
-  usuario     User[]
->>>>>>> Stashed changes
 }

@@ -19,16 +19,16 @@ interface Props {
   opened: boolean;
   onClose: () => void;
   name: string;
-  solvedBy: (UserStatusOnProblem & { user: User })[];
+  status: (UserStatusOnProblem & { user: User })[];
 }
 
-const ProblemDrawer = ({
-  problemId,
-  opened,
-  onClose,
-  name,
-  solvedBy,
-}: Props) => {
+const badgeColor = {
+  NOT_ATTEMPTED: "gray",
+  ATTEMPTED: "blue",
+  SOLVED: "green",
+};
+
+const ProblemDrawer = ({ problemId, opened, onClose, name, status }: Props) => {
   const updateUserStatus = trpc.useMutation(["potw.updateProblemUserStatus"]);
 
   const utils = trpc.useContext();
@@ -64,14 +64,14 @@ const ProblemDrawer = ({
     >
       <Title order={4}>Status</Title>
       <Stack my={20}>
-        {solvedBy.map((user) => (
+        {status.map((user) => (
           <Paper withBorder shadow="md" p={10}>
             <Group position="apart">
               <Group>
-                <Avatar />
+                <Avatar src={user.user.image} radius="xl" />
                 <Title order={5}>{user.user.name}</Title>
               </Group>
-              <Badge color={"green"}>{user.status}</Badge>
+              <Badge color={badgeColor[user.status]}>{user.status}</Badge>
             </Group>
           </Paper>
         ))}

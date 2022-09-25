@@ -68,7 +68,7 @@ const PotwRoot = () => {
     createProblem.mutate(
       {
         title: "Two Sum",
-        difficulty: "EASY",
+        difficulty: "INSANE",
         week: week?.id,
         link: "https://leetcode.com",
       },
@@ -126,7 +126,7 @@ const PotwRoot = () => {
               difficulty={problem.difficulty}
               link={problem.link}
               id={problem.id}
-              solvedBy={problem.userStatus}
+              status={problem.userStatus}
             />
           ))}
       </Stack>

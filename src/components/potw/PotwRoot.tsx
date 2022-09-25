@@ -1,4 +1,5 @@
 import {
+  Affix,
   Anchor,
   Avatar,
   Badge,
@@ -17,7 +18,9 @@ import {
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconBrandYoutube, IconExternalLink, IconLink } from "@tabler/icons";
+import Link from "next/link";
 import React, { useState } from "react";
+import { useUser } from "../../hooks/useUser";
 import { trpc } from "../../utils/trpc";
 import ProblemCard from "./ProblemCard";
 
@@ -25,6 +28,8 @@ type ProblemFilters = "ALL" | "NOT_SOLVED" | "FREQUENCY" | "DIFFICULTY";
 
 const PotwRoot = () => {
   const [selectedFilter, setSelectedFilter] = useState<ProblemFilters>("ALL");
+
+  const { user } = useUser();
 
   const { data: problems, isLoading } = trpc.useQuery([
     "potw.getProblemsByWeek",
@@ -123,6 +128,13 @@ const PotwRoot = () => {
             />
           ))}
       </Stack>
+      {user?.admin && (
+        <Affix position={{ bottom: 20, right: 20 }}>
+          <Link href={`admin/potw-manager/${week?.id}`}>
+            <Button>Editar Problemas de la Semana</Button>
+          </Link>
+        </Affix>
+      )}
     </div>
   );
 };

@@ -17,7 +17,22 @@ export const potwRouter = createRouter()
       const week = await req.ctx.prisma.week.findUnique({
         where: { number: req.input.week },
       });
-      return req.ctx.prisma.problem.findMany({
+
+      if (req.input.filter === "DIFFICULTY") {
+        return req.ctx.prisma.problem.findMany({
+          where: {
+            weekId: week?.id,
+          },
+          orderBy: {
+            difficulty: "desc",
+          },
+          include: {
+            userStatus: { include: { user: true } },
+          },
+        });
+      }
+
+      const problems = await req.ctx.prisma.problem.findMany({
         where: {
           weekId: week?.id,
         },
@@ -25,6 +40,30 @@ export const potwRouter = createRouter()
           userStatus: { include: { user: true } },
         },
       });
+
+      if (req.input.filter === "ALL") {
+        return problems;
+      }
+
+      if (req.input.filter === "NOT_SOLVED") {
+        return problems.filter((problem) => {
+          return !problem.userStatus.find(
+            (status) =>
+              status.userId === req.ctx.user?.id && status.status === "SOLVED"
+          );
+        });
+      }
+
+      if (req.input.filter === "FREQUENCY") {
+        const mappedFrequency = problems.map((problem) => {
+          const solvedStatus = problem.userStatus.filter(
+            (status) => status.status === "SOLVED"
+          );
+          return { ...problem, frequency: solvedStatus.length };
+        });
+
+        return mappedFrequency.sort((a, b) => b.frequency - a.frequency);
+      }
     },
   })
   .query("getResourcesByWeek", {

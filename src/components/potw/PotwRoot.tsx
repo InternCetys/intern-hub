@@ -16,14 +16,18 @@ import {
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconBrandYoutube, IconExternalLink, IconLink } from "@tabler/icons";
-import React from "react";
+import React, { useState } from "react";
 import { trpc } from "../../utils/trpc";
 import ProblemCard from "./ProblemCard";
 
+type ProblemFilters = "ALL" | "NOT_SOLVED" | "FREQUENCY" | "DIFFICULTY";
+
 const PotwRoot = () => {
+  const [selectedFilter, setSelectedFilter] = useState<ProblemFilters>("ALL");
+
   const { data: problems, isLoading } = trpc.useQuery([
     "potw.getProblemsByWeek",
-    { week: 1, filter: "ALL" },
+    { week: 1, filter: selectedFilter },
   ]);
 
   const { data: week, isLoading: isLoadingWeek } = trpc.useQuery([
@@ -110,10 +114,13 @@ const PotwRoot = () => {
       <Paper mt={20}>
         <Text weight={700}>Filtrar por:</Text>
         <SegmentedControl
+          value={selectedFilter}
+          onChange={(value: ProblemFilters) => setSelectedFilter(value)}
           data={[
-            { value: "diff", label: "Dificultad" },
-            { value: "freq", label: "Frecuencia" },
-            { value: "unso", label: "No resueltos" },
+            { value: "ALL", label: "Todos" },
+            { value: "DIFFICULTY", label: "Dificultad" },
+            { value: "FREQUENCY", label: "Frecuencia" },
+            { value: "NOT_SOLVED", label: "No resueltos" },
           ]}
         />
       </Paper>

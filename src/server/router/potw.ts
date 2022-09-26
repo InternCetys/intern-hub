@@ -200,4 +200,46 @@ export const potwRouter = createRouter()
         },
       });
     },
+  })
+  .mutation("createResource", {
+    input: z.object({
+      week: z.string(),
+      title: z.string(),
+      link: z.string(),
+      type: z.enum(["VIDEO", "DOCUMENT"]),
+    }),
+    resolve: async (req) => {
+      return req.ctx.prisma.weekResource.create({
+        data: {
+          title: req.input.title,
+          link: req.input.link,
+          type: req.input.type,
+          week: {
+            connect: { id: req.input.week },
+          },
+        },
+      });
+    },
+  })
+  .mutation("updateResource", {
+    input: z.object({
+      id: z.string(),
+      week: z.string(),
+      title: z.string(),
+      link: z.string(),
+      type: z.enum(["VIDEO", "DOCUMENT"]),
+    }),
+    resolve: async (req) => {
+      return req.ctx.prisma.weekResource.update({
+        where: { id: req.input.id },
+        data: {
+          title: req.input.title,
+          link: req.input.link,
+          type: req.input.type,
+          week: {
+            connect: { id: req.input.week },
+          },
+        },
+      });
+    },
   });

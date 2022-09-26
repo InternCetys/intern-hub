@@ -63,7 +63,11 @@ const WeekEditorRoot = () => {
       name={currentWeek?.title || ""}
       number={currentWeek?.number || 0}
     />,
-    <EditResourceContent key={1} />,
+    <EditResourceContent
+      key={1}
+      weekNumber={currentWeek?.number || 0}
+      weekId={weekId}
+    />,
     <EditProblemContent
       weekNumber={currentWeek?.number || 0}
       weekId={weekId}

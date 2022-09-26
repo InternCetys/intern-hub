@@ -61,7 +61,13 @@ const PotwRoot = () => {
       <Group mt={10}>
         {resources &&
           resources.map((resource) => (
-            <Paper withBorder shadow={"md"} p={10} key={resource.id}>
+            <Paper
+              withBorder
+              shadow={"md"}
+              p={10}
+              key={resource.id}
+              style={{ cursor: "pointer" }}
+            >
               <Group>
                 <IconBrandYoutube />
                 <Text>{resource.title}</Text>

@@ -37,10 +37,9 @@ const userLinks = [
     disabled: true,
   },
   {
-    label: "POTW",
+    label: "Problemas de la Semana",
     icon: IconNotes,
     link: "/app/potw",
-    disabled: true,
   },
   {
     label: "Eventos",
@@ -74,6 +73,7 @@ const adminLinks = [
     links: [
       { label: "Usuarios Activos", link: "/app/admin/attendance" },
       { label: "Stats", link: "/app/admin/stats" },
+      { label: "POTW Manager", link: "/app/admin/potw-manager" },
     ],
   },
 ];
@@ -142,7 +142,7 @@ export function NavbarNested({ isAdmin }: Props) {
         <Group position="apart">
           <Logo />
           <Group>
-            <Code sx={{ fontWeight: 700 }}>0.0.1</Code>
+            <Code sx={{ fontWeight: 700 }}>0.0.2</Code>
             <ActionIcon
               variant="default"
               onClick={() => toggleColorScheme()}

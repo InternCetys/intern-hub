@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -46,8 +47,9 @@ model User {
   accounts       Account[]
   sessions       Session[]
   isInternMember Boolean?  @default(false)
-  badges         Badges    @relation(fields: [badgeId], references: [id], onDelete: SetNull)
-  badgeId        String[]  @default([])
+  attendance    AttendanceOnUsers[]
+  admin Boolean @default(false)
+  userStatusOnProblem UserStatusOnProblem[]
 }
 
 model VerificationToken {
@@ -58,10 +60,95 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Badges {
-  id          String   @id @default(cuid())
-  name        String   @unique @default(" ") 
-  imageURL    String   @unique
-  descrption  String   @default(" ")
-  usuarios     User[]
+model Attendance {
+  id String @id @default(cuid())
+  date DateTime @default(now()) @db.Date @unique
+  users AttendanceOnUsers[]
+}
+
+model AttendanceOnUsers {
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String 
+  attendance Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  attendanceId String
+
+  @@id([userId, attendanceId])
+}
+
+model InternSession {
+  id String @id @default(cuid())
+  title String
+  date DateTime @default(now()) @db.Date @unique
+  resources Resource[]
+}
+
+model Resource {
+  id String @id @default(cuid())
+  title String
+  description String
+  link String
+  type ResourceType
+  date DateTime @default(now()) @db.Date @unique
+  internSession InternSession? @relation(fields: [internSessionId], references:[id], onDelete: SetNull)
+  internSessionId String?
+}
+
+model Problem {
+  id String @id @default(cuid())
+  title String
+  link String
+  difficulty ProblemDifficulty
+  week Week @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  weekId String
+  userStatus UserStatusOnProblem[]
+}
+
+model Week {
+  id String @id @default(cuid())
+  number Int   @unique
+  title String
+  problems Problem[]
+  resources WeekResource[]
+
+  @@index([number], type: Hash)
+}
+
+model WeekResource {
+  id String @id @default(cuid())
+  title String
+  type ResourceType
+  link String
+  week Week @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  weekId String
+}
+
+model UserStatusOnProblem {
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  problemId String
+  status ProblemStatus
+
+  @@id([userId, problemId])
+}
+
+enum ResourceType  {
+  SLIDES
+  VIDEO
+  PDF
+  DOCUMENT
+  OTHER
+}
+
+enum ProblemStatus {
+  SOLVED
+  ATTEMPTED
+  NOT_ATTEMPTED
+}
+
+enum ProblemDifficulty {
+  EASY
+  MEDIUM
+  HARD
+  INSANE
 }

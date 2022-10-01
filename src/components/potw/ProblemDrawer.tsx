@@ -69,17 +69,19 @@ const ProblemDrawer = ({ problemId, opened, onClose, name, status }: Props) => {
             No hay usuarios que hayan intentado este problema
           </Paper>
         )}
-        {status.map((user) => (
-          <Paper withBorder shadow="md" p={10} key={user.userId}>
-            <Group position="apart">
-              <Group>
-                <Avatar src={user.user.image} radius="xl" />
-                <Title order={5}>{user.user.name}</Title>
+        <Stack style={{ overflowY: "auto", height: "75vh" }}>
+          {status.map((user) => (
+            <Paper withBorder shadow="md" p={10} key={user.userId}>
+              <Group position="apart">
+                <Group>
+                  <Avatar src={user.user.image} radius="xl" />
+                  <Title order={5}>{user.user.name}</Title>
+                </Group>
+                <Badge color={badgeColor[user.status]}>{user.status}</Badge>
               </Group>
-              <Badge color={badgeColor[user.status]}>{user.status}</Badge>
-            </Group>
-          </Paper>
-        ))}
+            </Paper>
+          ))}
+        </Stack>
       </Stack>
       <Stack>
         <Button

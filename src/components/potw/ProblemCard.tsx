@@ -83,7 +83,6 @@ const ProblemCard = ({ id, name, link, difficulty, status }: Props) => {
             {userSolved && <Badge color={"yellow"}>Solved</Badge>}
             {userAttempted && <Badge color={"blue"}>Attempted</Badge>}
           </Group>
-          {/* <pre>{JSON.stringify(solvedBy, null, 2)}</pre> */}
           <Avatar.Group
             spacing="sm"
             onClick={() => setOpenProblemDetailsDrawer(true)}

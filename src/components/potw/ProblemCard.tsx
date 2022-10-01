@@ -38,6 +38,10 @@ const ProblemCard = ({ id, name, link, difficulty, status }: Props) => {
 
   const { user } = useUser();
   const solvedBy = useMemo(() => {
+    return status.filter((s) => s.status === "SOLVED");
+  }, [status]);
+
+  const solvedBySpliced = useMemo(() => {
     return status
       .filter((s) => s.status === "SOLVED")
       .splice(0, Math.min(4, status.length));
@@ -79,17 +83,20 @@ const ProblemCard = ({ id, name, link, difficulty, status }: Props) => {
             {userSolved && <Badge color={"yellow"}>Solved</Badge>}
             {userAttempted && <Badge color={"blue"}>Attempted</Badge>}
           </Group>
+          {/* <pre>{JSON.stringify(solvedBy, null, 2)}</pre> */}
           <Avatar.Group
             spacing="sm"
             onClick={() => setOpenProblemDetailsDrawer(true)}
             style={{ cursor: "pointer" }}
           >
-            {solvedBy.map((user) => (
+            {solvedBySpliced.map((user) => (
               <Tooltip label={user.user.name} withArrow key={user.userId}>
                 <Avatar radius="xl" src={user.user.image} />
               </Tooltip>
             ))}
-            <Avatar radius="xl">+</Avatar>
+            <Avatar radius="xl">
+              {solvedBy.length - solvedBySpliced.length}+
+            </Avatar>
           </Avatar.Group>
         </Group>
       </Paper>

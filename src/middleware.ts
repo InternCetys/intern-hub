@@ -8,10 +8,10 @@ export function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname === "/app") {
-    return NextResponse.rewrite(new URL("/app/resources", request.url));
+    return NextResponse.rewrite(new URL("/app/potw", request.url));
   }
 
   if (request.nextUrl.pathname === "/app/dashboard") {
-    return NextResponse.rewrite(new URL("/app/resources", request.url));
+    return NextResponse.rewrite(new URL("/app/potw", request.url));
   }
 }

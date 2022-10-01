@@ -18,9 +18,11 @@ import {
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconBrandYoutube, IconExternalLink, IconLink } from "@tabler/icons";
+import { getWeek } from "date-fns";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useUser } from "../../hooks/useUser";
+import { getRelativeWeek } from "../../utils/dates";
 import { trpc } from "../../utils/trpc";
 import ProblemCard from "./ProblemCard";
 
@@ -28,23 +30,36 @@ type ProblemFilters = "ALL" | "NOT_SOLVED" | "FREQUENCY" | "DIFFICULTY";
 
 const PotwRoot = () => {
   const [selectedFilter, setSelectedFilter] = useState<ProblemFilters>("ALL");
+  const [selectedWeek, setSelectedWeek] = useState(getRelativeWeek());
 
   const { user } = useUser();
 
   const { data: problems, isLoading } = trpc.useQuery([
     "potw.getProblemsByWeek",
-    { week: 1, filter: selectedFilter },
+    { week: selectedWeek, filter: selectedFilter },
   ]);
 
   const { data: week, isLoading: isLoadingWeek } = trpc.useQuery([
     "potw.getCurrentWeek",
-    1,
+    selectedWeek,
   ]);
 
   const { data: resources, isLoading: isLoadingResources } = trpc.useQuery([
     "potw.getResourcesByWeek",
-    { week: 1 },
+    { week: selectedWeek },
   ]);
+
+  const handleNextWeek = () => {
+    setSelectedWeek((prev) => Math.min(prev + 1, getRelativeWeek()));
+  };
+
+  const handlePreviousWeek = () => {
+    setSelectedWeek((prev) => Math.max(1, prev - 1));
+  };
+
+  const handleCurrentWeek = () => {
+    setSelectedWeek(getRelativeWeek());
+  };
 
   return (
     <div>
@@ -55,9 +70,12 @@ const PotwRoot = () => {
       {isLoadingWeek && (
         <Skeleton visible={true} width="40%" height={40} mt={20}></Skeleton>
       )}
-      <Title order={2} mt={20}>
-        Tema: {week?.title}
-      </Title>
+      <Group mt={10} position="apart">
+        <Group>
+          <Title order={2}>Tema: {week?.title}</Title>
+          <Badge>Semana {selectedWeek}</Badge>
+        </Group>
+      </Group>
       <Group mt={10}>
         {resources &&
           resources.map((resource) => (
@@ -135,12 +153,29 @@ const PotwRoot = () => {
           ))}
       </Stack>
       {user?.admin && (
-        <Affix position={{ bottom: 20, right: 20 }}>
+        <Affix position={{ bottom: 70, right: 20 }}>
           <Link href={`admin/potw-manager/${week?.id}`}>
             <Button>Editar Problemas de la Semana</Button>
           </Link>
         </Affix>
       )}
+      <Affix position={{ bottom: 20, right: 20 }}>
+        <Group>
+          <Button
+            onClick={() => handlePreviousWeek()}
+            disabled={selectedWeek === 1}
+          >
+            Semana Anterior
+          </Button>
+          <Button onClick={() => handleCurrentWeek()}>Semana Actual</Button>
+          <Button
+            onClick={() => handleNextWeek()}
+            disabled={selectedWeek === getRelativeWeek()}
+          >
+            Siguiente Semana
+          </Button>
+        </Group>
+      </Affix>
     </div>
   );
 };

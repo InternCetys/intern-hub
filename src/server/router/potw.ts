@@ -46,6 +46,10 @@ export const potwRouter = createRouter()
         where: { number: req.input.week },
       });
 
+      if (week === null) {
+        return [];
+      }
+
       if (req.input.filter === "DIFFICULTY") {
         return req.ctx.prisma.problem.findMany({
           where: {
@@ -105,6 +109,11 @@ export const potwRouter = createRouter()
       const week = await req.ctx.prisma.week.findUnique({
         where: { number: req.input.week },
       });
+
+      if (week === null) {
+        return [];
+      }
+
       return req.ctx.prisma.weekResource.findMany({
         where: {
           weekId: week?.id,

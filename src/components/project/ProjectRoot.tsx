@@ -9,10 +9,9 @@ const ProjectRoot = () => {
       <Affix position={{ top: 60, right: 25 }}>
         <Button>Upload new project</Button>
       </Affix>
-      <Card width="40%"></Card>
+      <Card></Card>
     </div>
   );
-  
 };
 
 export default ProjectRoot;

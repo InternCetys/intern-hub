@@ -1,6 +1,7 @@
 import { Card, Title,Text, Space, Grid  } from "@mantine/core";
 import ProjectView from "./Cards";
 import React from "react";
+import Cards from "./Cards";
 
 const ProjectRoot = () => {
   return (

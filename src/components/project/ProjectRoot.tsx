@@ -9,7 +9,7 @@ const ProjectRoot = () => {
       <Affix position={{ top: 60, right: 25 }}>
         <Button>Upload new project</Button>
       </Affix>
-      <Card></Card>
+      <Card width="40%"></Card>
     </div>
   );
   

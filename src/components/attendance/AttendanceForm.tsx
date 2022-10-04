@@ -45,7 +45,7 @@ const AttendanceForm = ({
     onSuccess: () => {
       utils.invalidateQueries(["attendance.getAttendanceByDate"]);
       showNotification({
-        message: "Attendance created successfully",
+        message: "Asistencia creada correctamente",
         icon: <IconCheck />,
         color: "green",
       });
@@ -57,7 +57,7 @@ const AttendanceForm = ({
       utils.invalidateQueries(["attendance.getAttendanceByDate"]);
       cancelEdit();
       showNotification({
-        message: "Attendance updated successfully",
+        message: "Asistencia actualizada correctamente",
         icon: <IconCheck />,
         color: "green",
       });
@@ -94,8 +94,8 @@ const AttendanceForm = ({
         {users && (
           <Stack>
             <MultiSelect
-              label="Member Attendance"
-              placeholder="Search for a member"
+              label="Asistencia"
+              placeholder="Buscar miembro"
               itemComponent={SelectItem}
               data={users}
               searchable
@@ -120,7 +120,7 @@ const AttendanceForm = ({
               onClick={handleAttendanceSubmit}
               loading={createAttendance.isLoading || updateAttendance.isLoading}
             >
-              {isEditing ? "Update Attendance" : "Submit Attendance"}
+              {isEditing ? "Actualizar Asistencia" : "Subir Asistencia"}
             </Button>
           </Stack>
         )}

@@ -74,12 +74,12 @@ const NewResourceModal = ({
       link: "",
     },
     validate: {
-      title: (value) => (value.length > 0 ? null : "Title is required"),
+      title: (value) => (value.length > 0 ? null : "El título es requerido"),
       description: (value) =>
-        value.length > 0 ? null : "Description is required",
+        value.length > 0 ? null : "La descripción es requerida",
       type: (value: ResourceType) =>
-        value.length > 0 ? null : "Type is required",
-      session: (value) => (value.length > 0 ? null : "Session is required"),
+        value.length > 0 ? null : "El tipo es requerido",
+      session: (value) => (value.length > 0 ? null : "La sesión es requerida"),
     },
   });
 
@@ -99,7 +99,7 @@ const NewResourceModal = ({
     }
 
     if (values.file === null) {
-      showNotification({ message: "Please upload a file", color: "red" });
+      showNotification({ message: "Por favor sube un archivo", color: "red" });
       return;
     }
 
@@ -135,7 +135,7 @@ const NewResourceModal = ({
   const createResource = trpc.useMutation(["resource.createResource"], {
     onSuccess: () => {
       utils.invalidateQueries("resource.getResources");
-      showNotification({ message: "Resource created", color: "green" });
+      showNotification({ message: "Recurso creado", color: "green" });
       setIsCreateResourceOpen(false);
     },
   });
@@ -149,25 +149,25 @@ const NewResourceModal = ({
       <form onSubmit={form.onSubmit(handleFormSubmit)}>
         <Stack>
           <TextInput
-            label="Title"
+            label="Título"
             {...form.getInputProps("title")}
             withAsterisk
           />
           <Textarea
             withAsterisk
-            label="Description"
+            label="Descripción"
             {...form.getInputProps("description")}
           />
           <Select
             withAsterisk
-            label="Type"
+            label="Tipo"
             searchable
             data={resourceTypeSelectItems}
             {...form.getInputProps("type")}
           />
           <Select
             withAsterisk
-            label="Linked Session"
+            label="Sesión de Intern"
             searchable
             data={internSessions || []}
             itemComponent={SelectItem}
@@ -180,11 +180,11 @@ const NewResourceModal = ({
             onTabChange={setActiveTab}
           >
             <Tabs.List>
-              <Tabs.Tab value="file">File</Tabs.Tab>
+              <Tabs.Tab value="file">Archivo</Tabs.Tab>
               <Tabs.Tab value="link">Link</Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="file" pt="xs">
-              <Input.Wrapper label="Upload Files">
+              <Input.Wrapper label="Subir Archivo">
                 <ResourceDropzone
                   onDrop={(file) => form.setFieldValue("file", file)}
                   onReject={(error) => form.setErrors({ file: error })}
@@ -223,7 +223,7 @@ const NewResourceModal = ({
             type="submit"
             loading={isUploadingFile || createResource.isLoading}
           >
-            Upload Resource
+            Subir Recurso
           </Button>
         </Group>
       </form>

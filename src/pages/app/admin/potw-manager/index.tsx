@@ -1,9 +1,9 @@
 import Head from "next/head";
 import React from "react";
-import { NavbarNested } from "../../components/core/navbar/Navbar";
-import ProtectedRoute from "../../components/core/ProtectedRoute";
-import Shell from "../../components/core/Shell";
-import PotwRoot from "../../components/potw/PotwRoot";
+import AttendanceRoot from "../../../../components/attendance/AttendanceRoot";
+import ProtectedRoute from "../../../../components/core/ProtectedRoute";
+import Shell from "../../../../components/core/Shell";
+import PotwManagerRoot from "../../../../components/potw-manager/PotwManagerRoot";
 
 const potw = () => {
   return (
@@ -13,9 +13,9 @@ const potw = () => {
         <meta name="description" content="CETYS Intern Hub" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ProtectedRoute>
+      <ProtectedRoute admin>
         <Shell>
-          <PotwRoot />
+          <PotwManagerRoot />
         </Shell>
       </ProtectedRoute>
     </>

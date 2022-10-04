@@ -91,7 +91,7 @@ const ResourceCard = ({
             radius="md"
             onClick={() => handleDownload()}
           >
-            {isWebsiteLink ? "Open" : "Download"}
+            {isWebsiteLink ? "Abrir" : "Descargar"}
           </Button>
         </div>
       </Stack>

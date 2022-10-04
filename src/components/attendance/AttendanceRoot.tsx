@@ -40,6 +40,8 @@ import Image from "next/image";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../server/router";
 import { useForm } from "@mantine/form";
+import { es } from "date-fns/locale";
+import { capitalizeFirstLetter } from "../../utils/strs";
 
 const TODAY = startOfToday();
 
@@ -103,9 +105,10 @@ const AttendanceRoot = () => {
     return {};
   };
 
+  const formattedDate = format(selectedDate, "PPPP", { locale: es });
   return (
     <>
-      <Title>Active Users</Title>
+      <Title>Usuarios Activos</Title>
       <AttendanceForm
         selectedMembers={selectedMembers}
         setSelectedMembers={setSelectedMembers}
@@ -116,10 +119,10 @@ const AttendanceRoot = () => {
       <Stack mt={20}>
         <Group position={"apart"}>
           <Group>
-            <Title order={2}>{format(selectedDate, "PPPP")}</Title>
+            <Title order={2}>{capitalizeFirstLetter(formattedDate)}</Title>
             {internSession && (
               <Tooltip label={internSession.title}>
-                <Badge color="green">Intern Session</Badge>
+                <Badge color="green">Sesión de Intern</Badge>
               </Tooltip>
             )}
 

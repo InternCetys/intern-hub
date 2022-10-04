@@ -37,30 +37,29 @@ const userLinks = [
     disabled: true,
   },
   {
-    label: "Problems of the Week",
+    label: "Problemas de la Semana",
     icon: IconNotes,
     link: "/app/potw",
-    disabled: true,
   },
   {
-    label: "Upcoming Events",
+    label: "Eventos",
     icon: IconCalendarStats,
     link: "/app/events",
     disabled: true,
   },
   {
-    label: "Project Gallery",
+    label: "Galería de Proyectos",
     icon: IconPresentationAnalytics,
     link: "/app/projects",
     disabled: true,
   },
   {
-    label: "Resources",
+    label: "Recursos",
     icon: IconFile,
     link: "/app/resources",
   },
   {
-    label: "Leetcode Contest",
+    label: "Concursos",
     icon: IconTrophy,
     link: "/app/contest",
     disabled: true,
@@ -72,8 +71,9 @@ const adminLinks = [
     label: "Admin",
     icon: IconLock,
     links: [
-      { label: "Active Users", link: "/app/admin/attendance" },
+      { label: "Usuarios Activos", link: "/app/admin/attendance" },
       { label: "Stats", link: "/app/admin/stats" },
+      { label: "POTW Manager", link: "/app/admin/potw-manager" },
     ],
   },
 ];
@@ -142,7 +142,7 @@ export function NavbarNested({ isAdmin }: Props) {
         <Group position="apart">
           <Logo />
           <Group>
-            <Code sx={{ fontWeight: 700 }}>0.0.1</Code>
+            <Code sx={{ fontWeight: 700 }}>0.0.2</Code>
             <ActionIcon
               variant="default"
               onClick={() => toggleColorScheme()}

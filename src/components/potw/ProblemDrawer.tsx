@@ -63,13 +63,30 @@ const ProblemDrawer = ({ problemId, opened, onClose, name, status }: Props) => {
       size="xl"
     >
       <Title order={4}>Status</Title>
-      <Stack my={20}>
+      <Stack my={20} style={{ height: "80vh" }}>
         {status.length === 0 && (
           <Paper shadow="sm" p="xl" withBorder>
             No hay usuarios que hayan intentado este problema
           </Paper>
         )}
-        <Stack style={{ overflowY: "auto", height: "75vh" }}>
+        <Stack>
+          <Button
+            fullWidth
+            onClick={() => handleUpdateUserStatus("ATTEMPTED")}
+            loading={updateUserStatus.isLoading}
+          >
+            Marcar como en progreso
+          </Button>
+          <Button
+            fullWidth
+            color="green"
+            onClick={() => handleUpdateUserStatus("SOLVED")}
+            loading={updateUserStatus.isLoading}
+          >
+            Marcar como resuelto
+          </Button>
+        </Stack>
+        <Stack style={{ overflowY: "auto" }}>
           {status.map((user) => (
             <Paper withBorder shadow="md" p={10} key={user.userId}>
               <Group position="apart">
@@ -82,23 +99,6 @@ const ProblemDrawer = ({ problemId, opened, onClose, name, status }: Props) => {
             </Paper>
           ))}
         </Stack>
-      </Stack>
-      <Stack>
-        <Button
-          fullWidth
-          onClick={() => handleUpdateUserStatus("ATTEMPTED")}
-          loading={updateUserStatus.isLoading}
-        >
-          Marcar como en progreso
-        </Button>
-        <Button
-          fullWidth
-          color="green"
-          onClick={() => handleUpdateUserStatus("SOLVED")}
-          loading={updateUserStatus.isLoading}
-        >
-          Marcar como resuelto
-        </Button>
       </Stack>
     </Drawer>
   );

@@ -51,7 +51,7 @@ const userLinks = [
     label: "Galería de Proyectos",
     icon: IconPresentationAnalytics,
     link: "/app/projects",
-    disabled: false,
+    disabled: true,
   },
   {
     label: "Recursos",

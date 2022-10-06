@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ProjectView from "./Cards";
 import React from "react";
 import Cards from "./Cards";
+import ProjectForm from "./Form"
 
 const ProjectRoot = () => {
   const [opened, setOpened] = useState(false);
@@ -28,16 +29,7 @@ const ProjectRoot = () => {
           <ProjectView />
         </Grid.Col>
       </Grid>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title="Introduce yourself!"
-      >
-        
-      </Modal>
-      <Affix position={{ bottom: 20, right: 20 }}>
-        <Button onClick={() => setOpened(true)}> Upload new project </Button>
-      </Affix>
+      <ProjectForm></ProjectForm>
     </>
 
   )

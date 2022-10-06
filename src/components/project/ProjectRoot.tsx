@@ -7,7 +7,7 @@ const ProjectRoot = () => {
   return (
     <div>
       <Title>Project Gallery</Title>
-      <Affix position={{ top: 25, right: 25 }}>
+      <Affix position={{ bottom: 20, right: 20 }}>
         <Button> Upload new project </Button>
       </Affix>
       <Space w="lg" h="lg" />

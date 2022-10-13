@@ -1,11 +1,11 @@
+import { GetServerSideProps } from "next";
 import Head from "next/head";
-import React from "react";
-import { NavbarNested } from "../../components/core/navbar/Navbar";
 import ProtectedRoute from "../../components/core/ProtectedRoute";
 import Shell from "../../components/core/Shell";
-import PotwRoot from "../../components/potw/PotwRoot";
+import ProjectRoot from "../../components/project/ProjectRoot";
+import ResourcesRoot from "../../components/resources/ResourcesRoot";
 
-const potw = () => {
+const Resources = () => {
   return (
     <>
       <Head>
@@ -15,11 +15,11 @@ const potw = () => {
       </Head>
       <ProtectedRoute>
         <Shell>
-          <PotwRoot />
+          <ResourcesRoot />
         </Shell>
       </ProtectedRoute>
     </>
   );
 };
 
-export default potw;
+export default Resources;

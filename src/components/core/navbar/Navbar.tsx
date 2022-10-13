@@ -19,6 +19,7 @@ import {
   IconLogout,
   IconUser,
   IconLock,
+  IconFile,
 } from "@tabler/icons";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./LinksGroup";
@@ -28,30 +29,51 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 
-const mockdata = [
-  { label: "Dashboard", icon: IconGauge, link: "/app/dashboard" },
+const userLinks = [
   {
-    label: "Problems of the Week",
+    label: "Dashboard",
+    icon: IconGauge,
+    link: "/app/dashboard",
+    disabled: true,
+  },
+  {
+    label: "Problemas de la Semana",
     icon: IconNotes,
     link: "/app/potw",
   },
   {
-    label: "Upcoming Events",
+    label: "Eventos",
     icon: IconCalendarStats,
     link: "/app/events",
+    disabled: true,
   },
   {
-    label: "Project Gallery",
+    label: "Galería de Proyectos",
     icon: IconPresentationAnalytics,
     link: "/app/projects",
+    disabled: true,
   },
-  { label: "Leetcode Contest", icon: IconTrophy, link: "/app/contest" },
+  {
+    label: "Recursos",
+    icon: IconFile,
+    link: "/app/resources",
+  },
+  {
+    label: "Concursos",
+    icon: IconTrophy,
+    link: "/app/contest",
+    disabled: true,
+  },
+];
+
+const adminLinks = [
   {
     label: "Admin",
     icon: IconLock,
     links: [
-      { label: "Active Users", link: "/app/admin/attendance" },
+      { label: "Usuarios Activos", link: "/app/admin/attendance" },
       { label: "Stats", link: "/app/admin/stats" },
+      { label: "POTW Manager", link: "/app/admin/potw-manager" },
     ],
   },
 ];
@@ -93,9 +115,16 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function NavbarNested() {
+interface Props {
+  isAdmin: boolean;
+}
+
+export function NavbarNested({ isAdmin }: Props) {
   const { classes } = useStyles();
-  const links = mockdata.map((item) => (
+
+  const mergedLinks = [...userLinks, ...(isAdmin ? adminLinks : [])];
+
+  const links = mergedLinks.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
 
@@ -113,7 +142,7 @@ export function NavbarNested() {
         <Group position="apart">
           <Logo />
           <Group>
-            <Code sx={{ fontWeight: 700 }}>0.0.1</Code>
+            <Code sx={{ fontWeight: 700 }}>0.0.2</Code>
             <ActionIcon
               variant="default"
               onClick={() => toggleColorScheme()}
@@ -144,6 +173,7 @@ export function NavbarNested() {
         <Menu.Target>
           <Navbar.Section className={classes.footer}>
             <UserButton
+              admin={isAdmin}
               image={session?.user?.image || "Loading..."}
               name={session?.user?.name || "Loading..."}
               email={session?.user?.email || "Loading..."}

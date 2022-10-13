@@ -45,7 +45,7 @@ const userLinks = [
     label: "Eventos",
     icon: IconCalendarStats,
     link: "/app/events",
-    disabled: true,
+    disabled: false,
   },
   {
     label: "Galería de Proyectos",

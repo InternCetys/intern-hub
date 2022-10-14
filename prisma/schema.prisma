@@ -132,6 +132,12 @@ model UserStatusOnProblem {
   @@id([userId, problemId])
 }
 
+model Events{
+  id Int @id @default(autoincrement())
+  name String
+  date DateTime
+}
+
 enum ResourceType  {
   SLIDES
   VIDEO

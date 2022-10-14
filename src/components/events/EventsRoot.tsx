@@ -19,7 +19,6 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 
 const EventsRoot = () => {
   const [date, setDate] = useState(new Date());
-  console.log(date);
   return (
     <Stack spacing="xl">
       <Title>Upcoming Events</Title>
@@ -27,9 +26,12 @@ const EventsRoot = () => {
         <Center>
           <NextEvent />
         </Center>
-        <div>
-          <FullCalendar plugins={[DayGridView, interactionPlugin]} />
-        </div>
+        <Box sx={{ padding: "20px 200px" }}>
+          <FullCalendar
+            plugins={[DayGridView, interactionPlugin]}
+            events={[{ title: "platica Mau1", date: "2022-10-13" }]}
+          />
+        </Box>
       </Box>
     </Stack>
   );

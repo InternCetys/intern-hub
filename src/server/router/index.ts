@@ -7,6 +7,7 @@ import { attendanceRouter } from "./attendance";
 import { internSessionsRouter } from "./internSessions";
 import { resourceRouter } from "./resource";
 import { potwRouter } from "./potw";
+import { eventsRouter } from "./events";
 
 export const appRouter = createRouter()
   .transformer(superjson)
@@ -20,7 +21,8 @@ export const appRouter = createRouter()
   .merge("attendance.", attendanceRouter)
   .merge("internSessions.", internSessionsRouter)
   .merge("resource.", resourceRouter)
-  .merge("potw.", potwRouter);
+  .merge("potw.", potwRouter)
+  .merge("events", eventsRouter);
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ProjectView from "./Cards";
 import React from "react";
 import Cards from "./Cards";
-import ProjectForm from "./Form"
+import ProjectForm from "./NewProjectModal"
 
 const ProjectRoot = () => {
   const [opened, setOpened] = useState(false);

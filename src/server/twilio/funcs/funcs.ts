@@ -1,6 +1,6 @@
 import sgMail from '../sendgrid'
 
-export const sendEmail = (to_email: string) => {
+export const sendEmail = (to_email: string[]) => {
   sgMail
     .send({
       to: to_email,

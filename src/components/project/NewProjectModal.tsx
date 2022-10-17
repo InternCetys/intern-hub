@@ -46,7 +46,6 @@ interface FormTypes {
 }
 
 const utils = trpc.useContext();
-
   const form = useForm<FormTypes>({
     initialValues: {
       title: "",
@@ -54,7 +53,6 @@ const utils = trpc.useContext();
       image: null,
       repo: "",
     },
-
     validate: {
       title: (value) => (value.length > 0 ? null : "El título es requerido"),
       description: (value) =>

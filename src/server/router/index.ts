@@ -22,7 +22,7 @@ export const appRouter = createRouter()
   .merge("internSessions.", internSessionsRouter)
   .merge("resource.", resourceRouter)
   .merge("potw.", potwRouter)
-  .merge("events", eventsRouter);
+  .merge("events.", eventsRouter);
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

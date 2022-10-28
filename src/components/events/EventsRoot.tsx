@@ -16,9 +16,10 @@ import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import DayGridView from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import Calendar from "./Calendar";
+import { trpc } from "../../utils/trpc";
 
 const EventsRoot = () => {
-  const [date, setDate] = useState(new Date());
   return (
     <Stack spacing="xl">
       <Title>Upcoming Events</Title>
@@ -27,10 +28,7 @@ const EventsRoot = () => {
           <NextEvent />
         </Center>
         <Box sx={{ padding: "20px 200px" }}>
-          <FullCalendar
-            plugins={[DayGridView, interactionPlugin]}
-            events={[{ title: "platica Mau1", date: "2022-10-13" }]}
-          />
+          <Calendar />
         </Box>
       </Box>
     </Stack>

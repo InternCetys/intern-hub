@@ -10,29 +10,12 @@ const ProjectRoot = () => {
   return (
     <>
       <Title>Project Gallery</Title>
-      <Space w="lg" h="lg" />
-      <Grid>
-        <Grid.Col span={4}>
-          <Space w="md" />
-          <ProjectView />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Space w="md" />
-          <ProjectView />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Space w="md" />
-          <ProjectView />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Space w="md" />
-          <ProjectView />
-        </Grid.Col>
-      </Grid>
-      <ProjectForm></ProjectForm>
+      <Affix position={{ top: 60, right: 25 }}>
+        <Button>Upload new project</Button>
+      </Affix>
+      <Card></Card>
     </>
-
-  )
+  );
 };
 
 export default ProjectRoot;

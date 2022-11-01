@@ -7,6 +7,17 @@ Comandos:
 `npx prisma migrate dev --name "Descripcion de la migracion que hiciste"` para migrar la base de datos y aplicar los cambios nuevos
 `npx primsa studio` abrir la UI de prisma de manera local
 
+## PARA REALIZAR UNA MIGRACION
+- Cambiarte a Main
+- Modifica `schema.prisma`
+- `npx prisma migrate dev --name 'detalle de la migracion'
+- `git push`
+- Cambiate a tu rama
+- `git merge main`
+- Resuleve conflictos si los hay
+- `git push`
+
+
 **USAR NODE 16**
 
 Stack:

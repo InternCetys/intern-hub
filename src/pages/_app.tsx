@@ -18,6 +18,9 @@ import "nprogress/nprogress.css";
 import superjson from "superjson";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
+import "@fullcalendar/common/main.css";
+import "@fullcalendar/daygrid/main.css";
+import "@fullcalendar/timegrid/main.css";
 
 // Show loading bar on page change
 Router.events.on("routeChangeStart", () => NProgress.start());

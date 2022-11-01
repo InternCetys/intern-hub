@@ -85,6 +85,7 @@ const PotwRoot = () => {
               p={10}
               key={resource.id}
               style={{ cursor: "pointer" }}
+              onClick={() => window.open(resource.link, "_blank")}
             >
               <Group>
                 <IconBrandYoutube />

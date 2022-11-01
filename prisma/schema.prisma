@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -39,18 +39,18 @@ model Session {
 }
 
 model User {
-  id             String    @id @default(cuid())
-  name           String?
-  email          String?   @unique
-  emailVerified  DateTime?
-  image          String?
-  accounts       Account[]
-  sessions       Session[]
-  isInternMember Boolean?  @default(false)
-  attendance    AttendanceOnUsers[]
-  admin Boolean @default(false)
-  projects Project[]
+  id                  String                @id @default(cuid())
+  name                String?
+  email               String?               @unique
+  emailVerified       DateTime?
+  image               String?
+  accounts            Account[]
+  sessions            Session[]
+  isInternMember      Boolean?              @default(false)
+  attendance          AttendanceOnUsers[]
+  admin               Boolean               @default(false)
   userStatusOnProblem UserStatusOnProblem[]
+  projects Project[]
 }
 
 model VerificationToken {
@@ -62,24 +62,24 @@ model VerificationToken {
 }
 
 model Attendance {
-  id String @id @default(cuid())
-  date DateTime @default(now()) @db.Date @unique
+  id    String              @id @default(cuid())
+  date  DateTime            @unique @default(now()) @db.Date
   users AttendanceOnUsers[]
 }
 
 model AttendanceOnUsers {
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String 
-  attendance Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
   attendanceId String
 
   @@id([userId, attendanceId])
 }
 
 model InternSession {
-  id String @id @default(cuid())
-  title String
-  date DateTime @default(now()) @db.Date @unique
+  id        String     @id @default(cuid())
+  title     String
+  date      DateTime   @unique @default(now()) @db.Date
   resources Resource[]
 }
 
@@ -95,56 +95,62 @@ model Project {
   
 
 model Resource {
-  id String @id @default(cuid())
-  title String
-  description String
-  link String
-  type ResourceType
-  date DateTime @default(now()) @db.Date @unique
-  internSession InternSession? @relation(fields: [internSessionId], references:[id], onDelete: SetNull)
+  id              String         @id @default(cuid())
+  title           String
+  description     String
+  link            String
+  type            ResourceType
+  date            DateTime       @unique @default(now()) @db.Date
+  internSession   InternSession? @relation(fields: [internSessionId], references: [id], onDelete: SetNull)
   internSessionId String?
 }
 
 model Problem {
-  id String @id @default(cuid())
-  title String
-  link String
+  id         String                @id @default(cuid())
+  title      String
+  link       String
   difficulty ProblemDifficulty
-  week Week @relation(fields: [weekId], references: [id], onDelete: Cascade)
-  weekId String
+  week       Week                  @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  weekId     String
   userStatus UserStatusOnProblem[]
 }
 
 model Week {
-  id String @id @default(cuid())
-  number Int   @unique
-  title String
-  problems Problem[]
+  id        String         @id @default(cuid())
+  number    Int            @unique
+  title     String
+  problems  Problem[]
   resources WeekResource[]
 
   @@index([number], type: Hash)
 }
 
 model WeekResource {
-  id String @id @default(cuid())
-  title String
-  type ResourceType
-  link String
-  week Week @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  id     String       @id @default(cuid())
+  title  String
+  type   ResourceType
+  link   String
+  week   Week         @relation(fields: [weekId], references: [id], onDelete: Cascade)
   weekId String
 }
 
 model UserStatusOnProblem {
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  problem   Problem       @relation(fields: [problemId], references: [id], onDelete: Cascade)
   problemId String
-  status ProblemStatus
+  status    ProblemStatus
 
   @@id([userId, problemId])
 }
 
-enum ResourceType  {
+model Events {
+  id    Int    @id @default(autoincrement())
+  title String
+  date  String
+}
+
+enum ResourceType {
   SLIDES
   VIDEO
   PDF
